@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 
 const STATS = [
   { value: "100+", label: "Products available" },
-  { value: "5+", label: "Years experience" },
+  { value: "25+", label: "Years experience" },
   { value: "500+", label: "Happy customers" },
   { value: "24hr", label: "Turnaround support" },
 ];

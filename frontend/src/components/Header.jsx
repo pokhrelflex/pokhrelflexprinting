@@ -75,10 +75,14 @@ export default function Header({ visible = true }) {
     };
   }, [menuOpen]);
 
-  const textColor   = dark ? "text-white/80"   : "text-[#1A1A1A]/70";
-  const hoverColor  = dark ? "hover:text-white" : "hover:text-[#1A1A1A]";
-  const borderColor = dark ? "rgba(255,255,255,0.15)" : "rgba(0,58,77,0.12)";
-  const bgColor     = "transparent";
+  const textColor    = dark ? "text-white/80"          : "text-[#1A1A1A]";
+  const hoverColor   = dark ? "hover:text-white"       : "hover:text-[#6F1C00]";
+  const activeColor  = dark ? "text-[#F0C924]"         : "text-[#6F1C00]";
+  const ctaClasses   = dark
+    ? "bg-[#F0C924] text-[#003A4D] hover:bg-[#F0C924]/85"
+    : "bg-[#6F1C00] text-white hover:bg-[#6F1C00]/85";
+  const borderColor  = dark ? "rgba(255,255,255,0.15)" : "rgba(0,58,77,0.12)";
+  const bgColor      = "transparent";
 
   return (
     <header
@@ -126,7 +130,7 @@ export default function Header({ visible = true }) {
                 key={label}
                 to={to}
                 end={to === "/"}
-                className={({ isActive }) => `transition-colors duration-300 ${isActive ? "text-[#F0C924]" : hoverColor}`}
+                className={({ isActive }) => `transition-colors duration-300 ${isActive ? activeColor : hoverColor}`}
               >
                 {label}
               </NavLink>
@@ -138,7 +142,7 @@ export default function Header({ visible = true }) {
         <div className="flex items-center gap-2 shrink-0">
           <Link
             to="/contact"
-            className="hidden sm:flex rounded-full bg-[#F0C924] px-5 py-2 text-sm font-bold text-[#003A4D] transition-colors duration-300 items-center gap-2 hover:bg-[#F0C924]/85"
+            className={`hidden sm:flex rounded-full px-5 py-2 text-sm font-bold transition-colors duration-300 items-center gap-2 ${ctaClasses}`}
           >
             Contact
           </Link>

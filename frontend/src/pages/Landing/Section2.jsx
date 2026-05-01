@@ -3,7 +3,7 @@ import useScrollReveal from "./useScrollReveal";
 
 const STATS = [
   { value: 100, suffix: "+", label: "Products Available" },
-  { value: 5, suffix: "+", label: "Years Experience" },
+  { value: 25, suffix: "+", label: "Years Experience" },
   { value: 500, suffix: "+", label: "Happy Customers" },
   { value: 4, suffix: "", label: "Product Categories" },
 ];

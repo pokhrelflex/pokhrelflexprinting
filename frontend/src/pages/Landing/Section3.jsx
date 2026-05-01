@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState, memo } from "react";
 import {
   motion,
   useScroll,
@@ -6,7 +6,6 @@ import {
   useMotionValue,
   useAnimationFrame,
   useReducedMotion,
-  useSpring,
   wrap,
 } from "framer-motion";
 
@@ -25,20 +24,18 @@ const PRODUCTS = [
   { num: "12", name: "Menu Designs",       tag: "Hospitality",   img: "/Images/menu.jpg" },
 ];
 
-// 12 cards = 1 copy = 25 baseX units. Each card advanced per scroll distance
-// is driven by this number — higher = more cards per scroll = faster scrub.
+// 3 copies — translateX(-COPY_UNITS%) of total width = exactly 1 copy width
+// (so wrap is seamless). Fewer copies = fewer composited cards on screen.
+const COPY_COUNT = 3;
+const COPY_UNITS = 100 / COPY_COUNT;
 const CARDS_TO_SHOW = 11;
-const COPY_UNITS = 25;
 const TOTAL_CARDS = PRODUCTS.length;
 const SCROLL_BASEX_END = (CARDS_TO_SHOW / TOTAL_CARDS) * COPY_UNITS;
-// Drift rate: baseVelocity units → baseX units/sec. baseVelocity=1 gives a
-// slow but clearly visible ambient drift (~7 px/s on desktop strip).
 const DRIFT_RATE_PER_UNIT = 0.04;
 
-function ProductCard({ num, name, tag, img }) {
+const ProductCard = memo(function ProductCard({ num, name, tag, img }) {
   return (
     <div className="shrink-0 w-[260px] sm:w-[300px] lg:w-[340px] mr-4 sm:mr-6 group">
-      {/* Text above the visual — not inside the box */}
       <div className="mb-4 sm:mb-5">
         <h3
           className="font-light text-[#6F1C00] leading-tight tracking-tight"
@@ -50,54 +47,48 @@ function ProductCard({ num, name, tag, img }) {
           {tag}
         </p>
       </div>
-      {/* Visual block */}
-      <div className="aspect-[4/5] relative overflow-hidden bg-[#003A4D] transition-colors duration-500 group-hover:bg-[#001E2C]">
+      <div className="aspect-[4/5] relative overflow-hidden bg-[#003A4D]">
         {img && (
           <img
             src={img}
             alt={name}
-            loading="lazy"
+            width="340"
+            height="425"
+            decoding="async"
             draggable="false"
-            className="absolute inset-0 h-full w-full object-cover opacity-90 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         )}
-        {/* Subtle gradient overlay for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#001E2C]/70 via-[#001E2C]/10 to-[#001E2C]/30" />
-        {/* Watermark number — sits over the image */}
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#001E2C]/70 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <span
-            className="premium-font-galdgderbold text-white/15 leading-none select-none mix-blend-overlay"
-            style={{ fontSize: "clamp(7rem, 11vw, 13rem)" }}
+            className="premium-font-galdgderbold text-white/15 leading-none select-none"
+            style={{ fontSize: "clamp(5rem, 8vw, 9rem)" }}
           >
             {num}
           </span>
         </div>
-        <div className="absolute top-5 left-5 sm:top-6 sm:left-6">
+        <div className="pointer-events-none absolute top-5 left-5 sm:top-6 sm:left-6">
           <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F0C924]">
             [{num}]
           </span>
         </div>
-        <div className="absolute bottom-0 left-0 h-[3px] w-12 bg-[#F0C924] transition-all duration-500 group-hover:w-24" />
+        <div className="pointer-events-none absolute bottom-0 left-0 h-[3px] w-12 bg-[#F0C924]" />
       </div>
     </div>
   );
-}
+});
 
-function ProductMarquee({ products, scrollProgress, baseVelocity = 1 }) {
+function ProductMarquee({ products, scrollProgress, baseVelocity = 1, active }) {
   const prefersReducedMotion = useReducedMotion();
 
-  // Scroll-tied baseline — scroll [0, 1] → baseX [0, SCROLL_BASEX_END]
-  const scrollBaseXRaw = useTransform(scrollProgress, [0, 1], [0, SCROLL_BASEX_END]);
-  // Spring-smooth the scroll-tied component for buttery scrubbing
-  const scrollBaseX = useSpring(scrollBaseXRaw, { stiffness: 200, damping: 40, mass: 0.5 });
-  // Continuous ambient drift accumulator — never pauses
+  const scrollBaseX = useTransform(scrollProgress, [0, 1], [0, SCROLL_BASEX_END]);
   const driftX = useMotionValue(0);
-  // Combined position
   const baseX = useTransform([scrollBaseX, driftX], ([s, d]) => s + d);
   const x = useTransform(baseX, (v) => `-${wrap(0, COPY_UNITS, v)}%`);
 
-  useAnimationFrame((t, delta) => {
-    if (prefersReducedMotion) return;
+  useAnimationFrame((_t, delta) => {
+    if (prefersReducedMotion || !active) return;
     const driftDeltaUnits = baseVelocity * DRIFT_RATE_PER_UNIT * (delta / 1000);
     driftX.set(driftX.get() + driftDeltaUnits);
   });
@@ -108,7 +99,7 @@ function ProductMarquee({ products, scrollProgress, baseVelocity = 1 }) {
       aria-hidden={prefersReducedMotion ? undefined : "true"}
     >
       <motion.div className="flex w-max" style={{ x, willChange: "transform" }}>
-        {[0, 1, 2, 3].map((dup) => (
+        {Array.from({ length: COPY_COUNT }, (_, dup) => (
           <div key={dup} className="flex shrink-0">
             {products.map((p) => (
               <ProductCard key={`${dup}-${p.num}`} {...p} />
@@ -122,10 +113,23 @@ function ProductMarquee({ products, scrollProgress, baseVelocity = 1 }) {
 
 export default function Section3() {
   const sectionRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <section
@@ -135,7 +139,6 @@ export default function Section3() {
       style={{ height: "250vh" }}
     >
       <div className="sticky top-0 h-[100vh] min-h-[640px] flex flex-col justify-start pt-20 sm:pt-24 lg:pt-28 overflow-hidden">
-        {/* ── Heading block ── */}
         <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 mb-10 sm:mb-14 lg:mb-16">
           <div className="text-center">
             <h2
@@ -149,8 +152,12 @@ export default function Section3() {
           </div>
         </div>
 
-        {/* ── Sticky-pinned marquee: scroll-tied + ambient auto-drift ── */}
-        <ProductMarquee products={PRODUCTS} scrollProgress={scrollYProgress} baseVelocity={10} />
+        <ProductMarquee
+          products={PRODUCTS}
+          scrollProgress={scrollYProgress}
+          baseVelocity={10}
+          active={inView}
+        />
       </div>
     </section>
   );
