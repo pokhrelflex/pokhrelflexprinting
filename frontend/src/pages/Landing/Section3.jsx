@@ -11,18 +11,18 @@ import {
 } from "framer-motion";
 
 const PRODUCTS = [
-  { num: "01", name: "Visiting Card",      tag: "Identity" },
-  { num: "02", name: "Badge Printing",     tag: "Identity" },
-  { num: "03", name: "Cup Printing",       tag: "Sublimation" },
-  { num: "04", name: "Signage Board",      tag: "Spatial" },
-  { num: "05", name: "T-shirt Print",      tag: "Apparel" },
-  { num: "06", name: "Advertising Board",  tag: "Outdoor" },
-  { num: "07", name: "Event Banners",      tag: "Events" },
-  { num: "08", name: "Trophies & Medals",  tag: "Recognition" },
-  { num: "09", name: "ID Card Printing",   tag: "Identity" },
-  { num: "10", name: "Vinyl Stickers",     tag: "Adhesive" },
-  { num: "11", name: "Sublimation Prints", tag: "Heat Transfer" },
-  { num: "12", name: "Menu Designs",       tag: "Hospitality" },
+  { num: "01", name: "Visiting Card",      tag: "Identity",      img: "/Images/visiting card.jpg" },
+  { num: "02", name: "Badge Printing",     tag: "Identity",      img: "/Images/badge.jpg" },
+  { num: "03", name: "Cup Printing",       tag: "Sublimation",   img: "/Images/cup.jpg" },
+  { num: "04", name: "Signage Board",      tag: "Spatial",       img: "/Images/signage.jpg" },
+  { num: "05", name: "T-shirt Print",      tag: "Apparel",       img: "/Images/machines.jpg" },
+  { num: "06", name: "Advertising Board",  tag: "Outdoor",       img: "/Images/advertisement.jpg" },
+  { num: "07", name: "Event Banners",      tag: "Events",        img: "/Images/wedding.jpg" },
+  { num: "08", name: "Trophies & Medals",  tag: "Recognition",   img: "/Images/trophy.jpg" },
+  { num: "09", name: "ID Card Printing",   tag: "Identity",      img: "/Images/id.jpg" },
+  { num: "10", name: "Vinyl Stickers",     tag: "Adhesive",      img: "/Images/venyl.jpg" },
+  { num: "11", name: "Sublimation Prints", tag: "Heat Transfer", img: "/Images/sublimation.jpg" },
+  { num: "12", name: "Menu Designs",       tag: "Hospitality",   img: "/Images/menu.jpg" },
 ];
 
 // 12 cards = 1 copy = 25 baseX units. Each card advanced per scroll distance
@@ -35,7 +35,7 @@ const SCROLL_BASEX_END = (CARDS_TO_SHOW / TOTAL_CARDS) * COPY_UNITS;
 // slow but clearly visible ambient drift (~7 px/s on desktop strip).
 const DRIFT_RATE_PER_UNIT = 0.04;
 
-function ProductCard({ num, name, tag }) {
+function ProductCard({ num, name, tag, img }) {
   return (
     <div className="shrink-0 w-[260px] sm:w-[300px] lg:w-[340px] mr-4 sm:mr-6 group">
       {/* Text above the visual — not inside the box */}
@@ -52,9 +52,21 @@ function ProductCard({ num, name, tag }) {
       </div>
       {/* Visual block */}
       <div className="aspect-[4/5] relative overflow-hidden bg-[#003A4D] transition-colors duration-500 group-hover:bg-[#001E2C]">
+        {img && (
+          <img
+            src={img}
+            alt={name}
+            loading="lazy"
+            draggable="false"
+            className="absolute inset-0 h-full w-full object-cover opacity-90 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
+          />
+        )}
+        {/* Subtle gradient overlay for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#001E2C]/70 via-[#001E2C]/10 to-[#001E2C]/30" />
+        {/* Watermark number — sits over the image */}
         <div className="absolute inset-0 flex items-center justify-center">
           <span
-            className="premium-font-galdgderbold text-white/[0.07] leading-none select-none"
+            className="premium-font-galdgderbold text-white/15 leading-none select-none mix-blend-overlay"
             style={{ fontSize: "clamp(7rem, 11vw, 13rem)" }}
           >
             {num}

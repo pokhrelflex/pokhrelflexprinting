@@ -71,7 +71,7 @@ export default function Section2() {
             <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#003A4D]/60">
               About Us
             </span>
-            <h2 className="mt-4 premium-font-galdgderbold text-[2.5rem] text-[#1A1A1A] sm:text-5xl lg:text-7xl xl:text-8xl leading-[0.95]">
+            <h2 className="mt-4 premium-font-galdgderbold text-[2.5rem] text-[#6F1C00] sm:text-5xl lg:text-7xl xl:text-8xl leading-[0.95]">
               Who We{" "}
               <span className="text-[#003A4D]">Are</span>
             </h2>
