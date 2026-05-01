@@ -21,7 +21,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const defaultProdOrigins = [
   'https://pokhrelflexprinting.vercel.app',
-  'https://www.pokhrelflexprinting.com.np'
+  'https://pokhrelflexprinting.com',
+  'https://www.pokhrelflexprinting.com'
 ];
 
 const defaultDevOrigins = [
