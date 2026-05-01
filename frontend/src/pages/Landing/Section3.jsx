@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, memo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   motion,
   useScroll,
@@ -9,28 +10,28 @@ import {
   wrap,
 } from "framer-motion";
 
-const PRODUCTS = [
-  { num: "01", name: "Visiting Card",      tag: "Identity",      img: "/Images/visiting card.jpg" },
-  { num: "02", name: "Badge Printing",     tag: "Identity",      img: "/Images/badge.jpg" },
-  { num: "03", name: "Cup Printing",       tag: "Sublimation",   img: "/Images/cup.jpg" },
-  { num: "04", name: "Signage Board",      tag: "Spatial",       img: "/Images/signage.jpg" },
-  { num: "05", name: "T-shirt Print",      tag: "Apparel",       img: "/Images/machines.jpg" },
-  { num: "06", name: "Advertising Board",  tag: "Outdoor",       img: "/Images/advertisement.jpg" },
-  { num: "07", name: "Event Banners",      tag: "Events",        img: "/Images/wedding.jpg" },
-  { num: "08", name: "Trophies & Medals",  tag: "Recognition",   img: "/Images/trophy.jpg" },
-  { num: "09", name: "ID Card Printing",   tag: "Identity",      img: "/Images/id.jpg" },
-  { num: "10", name: "Vinyl Stickers",     tag: "Adhesive",      img: "/Images/venyl.jpg" },
-  { num: "11", name: "Sublimation Prints", tag: "Heat Transfer", img: "/Images/sublimation.jpg" },
-  { num: "12", name: "Menu Designs",       tag: "Hospitality",   img: "/Images/menu.jpg" },
+const PRODUCT_IMAGES = [
+  "/Images/visiting card.jpg",
+  "/Images/badge.jpg",
+  "/Images/cup.jpg",
+  "/Images/signage.jpg",
+  "/Images/machines.jpg",
+  "/Images/advertisement.jpg",
+  "/Images/wedding.jpg",
+  "/Images/trophy.jpg",
+  "/Images/id.jpg",
+  "/Images/venyl.jpg",
+  "/Images/sublimation.jpg",
+  "/Images/menu.jpg",
 ];
+const PRODUCT_COUNT = PRODUCT_IMAGES.length;
 
 // 3 copies — translateX(-COPY_UNITS%) of total width = exactly 1 copy width
 // (so wrap is seamless). Fewer copies = fewer composited cards on screen.
 const COPY_COUNT = 3;
 const COPY_UNITS = 100 / COPY_COUNT;
 const CARDS_TO_SHOW = 11;
-const TOTAL_CARDS = PRODUCTS.length;
-const SCROLL_BASEX_END = (CARDS_TO_SHOW / TOTAL_CARDS) * COPY_UNITS;
+const SCROLL_BASEX_END = (CARDS_TO_SHOW / PRODUCT_COUNT) * COPY_UNITS;
 const DRIFT_RATE_PER_UNIT = 0.04;
 
 const ProductCard = memo(function ProductCard({ num, name, tag, img }) {
@@ -79,8 +80,10 @@ const ProductCard = memo(function ProductCard({ num, name, tag, img }) {
   );
 });
 
-function ProductMarquee({ products, scrollProgress, baseVelocity = 1, active }) {
+function ProductMarquee({ scrollProgress, baseVelocity = 1, active }) {
+  const { t } = useTranslation();
   const prefersReducedMotion = useReducedMotion();
+  const items = t("section3.items", { returnObjects: true });
 
   const scrollBaseX = useTransform(scrollProgress, [0, 1], [0, SCROLL_BASEX_END]);
   const driftX = useMotionValue(0);
@@ -101,9 +104,18 @@ function ProductMarquee({ products, scrollProgress, baseVelocity = 1, active }) 
       <motion.div className="flex w-max" style={{ x, willChange: "transform" }}>
         {Array.from({ length: COPY_COUNT }, (_, dup) => (
           <div key={dup} className="flex shrink-0">
-            {products.map((p) => (
-              <ProductCard key={`${dup}-${p.num}`} {...p} />
-            ))}
+            {items.map((p, i) => {
+              const num = String(i + 1).padStart(2, "0");
+              return (
+                <ProductCard
+                  key={`${dup}-${num}`}
+                  num={num}
+                  name={p.name}
+                  tag={p.tag}
+                  img={PRODUCT_IMAGES[i]}
+                />
+              );
+            })}
           </div>
         ))}
       </motion.div>
@@ -114,6 +126,12 @@ function ProductMarquee({ products, scrollProgress, baseVelocity = 1, active }) 
 export default function Section3() {
   const sectionRef = useRef(null);
   const [inView, setInView] = useState(false);
+  const { t, i18n } = useTranslation();
+  const isNepali = i18n.language === "ne";
+  const headingFontSize = isNepali
+    ? "clamp(1.6rem, 4.2vw, 3.3rem)"
+    : "clamp(2.25rem, 6vw, 4.75rem)";
+  const headingLineHeight = isNepali ? 1.3 : 0.92;
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -142,18 +160,21 @@ export default function Section3() {
         <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 mb-10 sm:mb-14 lg:mb-16">
           <div className="text-center">
             <h2
-              className="premium-font-galdgderbold uppercase text-[#003A4D] leading-[0.92] tracking-tight"
-              style={{ fontSize: "clamp(2.25rem, 6vw, 4.75rem)" }}
+              className="premium-font-galdgderbold uppercase text-[#003A4D] tracking-tight"
+              style={{ fontSize: headingFontSize, lineHeight: headingLineHeight }}
             >
-              Everything your
-              <br />
-              brand prints.
+              {t("section3.headlineA")}
+              {!isNepali && (
+                <>
+                  <br />
+                  {t("section3.headlineB")}
+                </>
+              )}
             </h2>
           </div>
         </div>
 
         <ProductMarquee
-          products={PRODUCTS}
           scrollProgress={scrollYProgress}
           baseVelocity={10}
           active={inView}

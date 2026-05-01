@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function isSectionDark(elements) {
   if (!elements || elements.length === 0) return true;
@@ -23,19 +24,26 @@ function isSectionDark(elements) {
 }
 
 const NAV_LINKS = [
-  { label: "Home", to: "/" },
-  { label: "About", to: "/about" },
-  { label: "Products", to: "/products" },
-  { label: "Notices", to: "/notices" },
+  { key: "home",     to: "/" },
+  { key: "about",    to: "/about" },
+  { key: "products", to: "/products" },
+  { key: "notices",  to: "/notices" },
 ];
 
 export default function Header({ visible = true }) {
   const location = useLocation();
+  const { t, i18n } = useTranslation();
   const isLanding = location.pathname === "/";
   const isContact = location.pathname === "/contact";
   const [dark, setDark] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const headerRef = useRef(null);
+
+  const toggleLanguage = () => {
+    const next = i18n.language === "en" ? "ne" : "en";
+    i18n.changeLanguage(next);
+  };
+  const langLabel = i18n.language === "en" ? "NP" : "EN";
 
   const DARK_HERO = ["/", "/about", "/products", "/notices", "/faq", "/support", "/help-center"];
 
@@ -125,27 +133,40 @@ export default function Header({ visible = true }) {
         {/* Desktop nav */}
         <div className="flex-1 flex justify-center">
           <nav className={`hidden md:flex flex-nowrap items-center justify-center gap-8 text-sm font-medium whitespace-nowrap transition-colors duration-500 ${textColor}`}>
-            {NAV_LINKS.map(({ label, to }) => (
+            {NAV_LINKS.map(({ key, to }) => (
               <NavLink
-                key={label}
+                key={key}
                 to={to}
                 end={to === "/"}
                 className={({ isActive }) => `transition-colors duration-300 ${isActive ? activeColor : hoverColor}`}
               >
-                {label}
+                {t(`nav.${key}`)}
               </NavLink>
             ))}
           </nav>
         </div>
 
-        {/* Right — CTA + hamburger */}
+        {/* Right — CTA + lang toggle + hamburger */}
         <div className="flex items-center gap-2 shrink-0">
           <Link
             to="/contact"
             className={`hidden sm:flex rounded-full px-5 py-2 text-sm font-bold transition-colors duration-300 items-center gap-2 ${ctaClasses}`}
           >
-            Contact
+            {t("nav.contact")}
           </Link>
+
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            aria-label={`Switch language to ${langLabel === "NP" ? "Nepali" : "English"}`}
+            className={`hidden sm:flex h-9 min-w-[44px] items-center justify-center rounded-full border px-3 text-xs font-bold tracking-wider transition-colors duration-300 ${
+              dark
+                ? "border-white/20 text-white/80 hover:border-[#F0C924] hover:text-[#F0C924]"
+                : "border-[#003A4D]/20 text-[#003A4D] hover:border-[#6F1C00] hover:text-[#6F1C00]"
+            }`}
+          >
+            {langLabel}
+          </button>
 
           {/* Hamburger */}
           <button
@@ -186,9 +207,9 @@ export default function Header({ visible = true }) {
             </svg>
           </button>
           <nav className="flex-1 flex flex-col">
-            {NAV_LINKS.map(({ label, to }, i) => (
+            {NAV_LINKS.map(({ key, to }, i) => (
               <NavLink
-                key={label}
+                key={key}
                 to={to}
                 end={to === "/"}
                 onClick={() => setMenuOpen(false)}
@@ -197,16 +218,23 @@ export default function Header({ visible = true }) {
                   ${i < NAV_LINKS.length - 1 ? "border-b border-white/10" : ""}
                 `}
               >
-                {label}
+                {t(`nav.${key}`)}
               </NavLink>
             ))}
           </nav>
+          <button
+            type="button"
+            onClick={() => { toggleLanguage(); setMenuOpen(false); }}
+            className="mt-6 block w-full text-center rounded-full border border-white/30 px-5 py-3 text-sm font-bold text-white transition-colors hover:border-[#F0C924] hover:text-[#F0C924]"
+          >
+            {langLabel}
+          </button>
           <Link
             to="/contact"
             onClick={() => setMenuOpen(false)}
-            className="mt-6 block w-full text-center rounded-full bg-[#F0C924] px-5 py-3.5 text-base font-bold text-[#003A4D] transition-colors hover:bg-[#F0C924]/85"
+            className="mt-3 block w-full text-center rounded-full bg-[#F0C924] px-5 py-3.5 text-base font-bold text-[#003A4D] transition-colors hover:bg-[#F0C924]/85"
           >
-            Contact
+            {t("nav.contact")}
           </Link>
         </div>
       </aside>

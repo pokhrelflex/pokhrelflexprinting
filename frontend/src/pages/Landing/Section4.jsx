@@ -1,28 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
-
-const PRODUCTS = [
-  {
-    name: "Vinyl & Flex Printing", role: "Large Format",
-    desc: "High-quality vinyl banners, flex prints, standees, stickers, and custom signage for indoor and outdoor use.",
-    stats: [{ label: "Materials", value: "Premium" }, { label: "Sizes", value: "Any" }],
-  },
-  {
-    name: "Sublimation", role: "Heat Transfer",
-    desc: "Sublimation mugs, cups, t-shirts, photo frames, and personalized items with vivid, long-lasting colors.",
-    stats: [{ label: "Products", value: "50+" }, { label: "Colors", value: "Vibrant" }],
-  },
-  {
-    name: "Trophies & Medals", role: "Awards",
-    desc: "Custom trophies, medals, plaques, and recognition items for sports, corporate events, and ceremonies.",
-    stats: [{ label: "Designs", value: "100+" }, { label: "Wholesale", value: "Available" }],
-  },
-  {
-    name: "Table Stands", role: "Display & Signage",
-    desc: "Acrylic and metal table stands, menu holders, nameplates, and display accessories for businesses.",
-    stats: [{ label: "Types", value: "20+" }, { label: "Finish", value: "Premium" }],
-  },
-];
 
 const STACK_POSITIONS = {
   mobile: [
@@ -99,12 +77,14 @@ function ProductCard({ p, index, progress, pos, layout, reducedMotion }) {
         <p className={`text-[12px] leading-relaxed mb-5 ${descCls}`} style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{p.desc}</p>
         <div className="w-8 h-[2px] bg-[#F0C924] mb-4" />
         <div className="flex gap-2 mt-auto">
-          {p.stats.map(stat => (
-            <div key={stat.label} className={`flex-1 p-2.5 ${statBoxCls}`}>
-              <div className="text-sm font-bold text-[#F0C924] leading-none mb-1">{stat.value}</div>
-              <div className={`text-[8px] uppercase tracking-wider leading-tight ${statLabelCls}`}>{stat.label}</div>
-            </div>
-          ))}
+          <div className={`flex-1 p-2.5 ${statBoxCls}`}>
+            <div className="text-sm font-bold text-[#F0C924] leading-none mb-1">{p.stat1Value}</div>
+            <div className={`text-[8px] uppercase tracking-wider leading-tight ${statLabelCls}`}>{p.stat1Label}</div>
+          </div>
+          <div className={`flex-1 p-2.5 ${statBoxCls}`}>
+            <div className="text-sm font-bold text-[#F0C924] leading-none mb-1">{p.stat2Value}</div>
+            <div className={`text-[8px] uppercase tracking-wider leading-tight ${statLabelCls}`}>{p.stat2Label}</div>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -113,8 +93,10 @@ function ProductCard({ p, index, progress, pos, layout, reducedMotion }) {
 
 function ProductsSection() {
   const containerRef = useRef(null);
+  const { t } = useTranslation();
   const prefersReducedMotion = useReducedMotion();
   const [stackLayout, setStackLayout] = useState(getStackLayout);
+  const products = t("section4.products", { returnObjects: true });
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
   useEffect(() => {
     const updateLayout = () => setStackLayout(getStackLayout());
@@ -135,17 +117,17 @@ function ProductsSection() {
           <div className="w-full h-full" style={{ background: "radial-gradient(ellipse at center, rgba(0,58,77,0.15) 0%, transparent 70%)" }} />
         </div>
         <motion.div style={{ opacity: headingOpacity }} className="sm:hidden relative z-10 py-3 flex items-center justify-center shrink-0 pointer-events-none">
-          <h2 className="premium-font-galdgderbold text-[11px] text-[#1A1A1A]/45 uppercase tracking-[0.25em]">Products We Offer</h2>
+          <h2 className="premium-font-galdgderbold text-[11px] text-[#1A1A1A]/45 uppercase tracking-[0.25em]">{t("section4.vertical")}</h2>
         </motion.div>
         <div className="relative z-10 flex items-center justify-center w-full sm:w-[55%] lg:w-[42%] h-[60dvh] min-h-[400px] sm:h-full overflow-hidden">
-          {PRODUCTS.map((p, i) => (
-            <ProductCard key={p.name} p={p} index={i} progress={scrollYProgress} pos={STACK_POSITIONS[stackLayout][i]} layout={stackLayout} reducedMotion={prefersReducedMotion} />
+          {products.map((p, i) => (
+            <ProductCard key={i} p={p} index={i} progress={scrollYProgress} pos={STACK_POSITIONS[stackLayout][i]} layout={stackLayout} reducedMotion={prefersReducedMotion} />
           ))}
         </div>
         <div className="hidden sm:block flex-1" />
         <motion.div style={{ opacity: headingOpacity }} className="hidden sm:flex relative z-10 h-full items-center justify-center w-[72px] lg:w-[96px] shrink-0">
           <h2 className="premium-font-galdgderbold text-xl lg:text-3xl text-[#1A1A1A] whitespace-nowrap select-none" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", letterSpacing: "0.12em" }}>
-            Products We Offer
+            {t("section4.vertical")}
           </h2>
         </motion.div>
       </div>

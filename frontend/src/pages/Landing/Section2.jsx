@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import useScrollReveal from "./useScrollReveal";
 
 const STATS = [
-  { value: 100, suffix: "+", label: "Products Available" },
-  { value: 25, suffix: "+", label: "Years Experience" },
-  { value: 500, suffix: "+", label: "Happy Customers" },
-  { value: 4, suffix: "", label: "Product Categories" },
+  { value: 100, suffix: "+", labelKey: "stats.products" },
+  { value: 25,  suffix: "+", labelKey: "stats.years" },
+  { value: 500, suffix: "+", labelKey: "stats.customers" },
+  { value: 4,   suffix: "",  labelKey: "stats.categories" },
 ];
 
 function useCountUp(target, suffix, duration, shouldStart) {
@@ -27,7 +28,8 @@ function useCountUp(target, suffix, duration, shouldStart) {
   return display;
 }
 
-function StatItem({ value, suffix, label }) {
+function StatItem({ value, suffix, labelKey }) {
+  const { t } = useTranslation();
   const [statRef, statVisible] = useScrollReveal(0.3);
   const display = useCountUp(value, suffix, 2000, statVisible);
   const [hovered, setHovered] = useState(false);
@@ -42,7 +44,7 @@ function StatItem({ value, suffix, label }) {
         {display}
       </div>
       <div className="mt-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
-        {label}
+        {t(labelKey)}
       </div>
     </div>
   );
@@ -53,8 +55,8 @@ function StatsStrip() {
   return (
     <div ref={stripRef} className={`bg-[#003A4D] transition-all duration-1000 ${stripVisible ? "opacity-100" : "opacity-0"}`}>
       <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-        {STATS.map((s, i) => (
-          <StatItem key={s.label} value={s.value} suffix={s.suffix} label={s.label} delay={i * 200} />
+        {STATS.map((s) => (
+          <StatItem key={s.labelKey} value={s.value} suffix={s.suffix} labelKey={s.labelKey} />
         ))}
       </div>
     </div>
@@ -62,6 +64,7 @@ function StatsStrip() {
 }
 
 export default function Section2() {
+  const { t } = useTranslation();
   const [ref, visible] = useScrollReveal(0.08);
   return (
     <section ref={ref} id="who-we-are" className="relative bg-[#F2F0EC] overflow-hidden">
@@ -69,21 +72,21 @@ export default function Section2() {
         <div className="mx-auto max-w-5xl">
           <div className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
             <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#003A4D]/60">
-              About Us
+              {t("about.eyebrow")}
             </span>
             <h2 className="mt-4 premium-font-galdgderbold text-[2.5rem] text-[#6F1C00] sm:text-5xl lg:text-7xl xl:text-8xl leading-[0.95]">
-              Who We{" "}
-              <span className="text-[#003A4D]">Are</span>
+              {t("about.titleA")}{" "}
+              <span className="text-[#003A4D]">{t("about.titleB")}</span>
             </h2>
           </div>
 
           <div className={`mt-8 sm:mt-12 grid gap-0 lg:grid-cols-[1fr_1px_1fr] items-start transition-all duration-1000 delay-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             <p className="text-base sm:text-lg leading-[1.8] text-[#1A1A1A]/70 pr-0 lg:pr-12">
-              <span className="font-semibold text-[#1A1A1A]">Pokhrel Flex Printing</span> is a printing business based in Nepal offering quality print solutions for retail and wholesale customers.
+              <span className="font-semibold text-[#1A1A1A]">{t("about.leadName")}</span>{t("about.leadBody")}
             </p>
             <div className="hidden lg:block w-px h-full bg-[#1A1A1A]/10" />
             <p className="text-sm sm:text-base leading-[1.8] text-[#1A1A1A]/50 pl-0 lg:pl-12 mt-4 lg:mt-0">
-              We specialize in vinyl and flex printing, sublimation cups and materials, custom trophies, medals, table stands, and much more. Whether you need a single piece or a bulk wholesale order, we deliver quality every time.
+              {t("about.subBody")}
             </p>
           </div>
         </div>

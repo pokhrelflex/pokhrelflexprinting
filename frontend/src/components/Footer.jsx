@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 const newsletterApiUrl = import.meta.env.PROD
@@ -7,6 +8,7 @@ const newsletterApiUrl = import.meta.env.PROD
   : "http://localhost:5300/api/forms/newsletter";
 
 const Footer = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [subscribeStatus, setSubscribeStatus] = useState("");
   const [subscribeError, setSubscribeError] = useState("");
@@ -20,9 +22,9 @@ const Footer = () => {
     try {
       await axios.post(newsletterApiUrl, { email });
       setEmail("");
-      setSubscribeStatus("Thank you for subscribing.");
+      setSubscribeStatus(t("footer.thanks"));
     } catch (err) {
-      setSubscribeError(err.response?.data?.message || "Subscription failed. Please try again.");
+      setSubscribeError(err.response?.data?.message || t("footer.subscribeFail"));
     } finally {
       setIsSubscribing(false);
     }
@@ -35,19 +37,19 @@ const Footer = () => {
         {/* ── Top row: tagline + newsletter ── */}
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between pb-8 sm:pb-12">
           <h2 className="premium-font-galdgderbold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight shrink-0">
-            <span className="block">Print With</span>
-            <span className="block">Confidence.</span>
+            <span className="block">{t("footer.headlineA")}</span>
+            <span className="block">{t("footer.headlineB")}</span>
           </h2>
 
           <div className="flex flex-col items-start w-full sm:w-auto">
-            <p className="text-sm font-semibold text-white mb-3">Get In Touch!</p>
+            <p className="text-sm font-semibold text-white mb-3">{t("footer.getInTouch")}</p>
             <form onSubmit={handleSubscribe} className="flex items-center overflow-hidden border border-white/15 bg-white/5 backdrop-blur-sm w-full sm:w-80">
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder={t("footer.emailPlaceholder")}
                 className="flex-1 bg-transparent px-4 py-3 text-xs text-white outline-none placeholder:text-white/30 min-w-0"
               />
               <button
@@ -55,7 +57,7 @@ const Footer = () => {
                 disabled={isSubscribing}
                 className="shrink-0 bg-[#F0C924] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#F0C924]/85 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isSubscribing ? "Sending..." : "Subscribe"}
+                {isSubscribing ? t("footer.subscribing") : t("footer.subscribe")}
               </button>
             </form>
             {subscribeStatus && <p className="mt-2 text-xs text-white/70">{subscribeStatus}</p>}
@@ -68,7 +70,7 @@ const Footer = () => {
 
           {/* Contact Information */}
           <div className="col-span-2 sm:col-span-1">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">Contact Information</h4>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">{t("footer.contactInformation")}</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-2 text-xs text-white/60">
                 <svg className="h-3.5 w-3.5 mt-0.5 shrink-0 text-[#F0C924]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -87,25 +89,25 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span>Nepal</span>
+                <span>{t("footer.country")}</span>
               </li>
             </ul>
           </div>
 
           {/* Company */}
           <div>
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">Company</h4>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">{t("footer.company")}</h4>
             <ul className="space-y-2.5">
               {[
-                { label: "Home",     to: "/" },
-                { label: "About",    to: "/about" },
-                { label: "Products", to: "/products" },
-                { label: "Notices",  to: "/notices" },
-                { label: "Contact",  to: "/contact" },
-              ].map(({ label, to }) => (
-                <li key={label}>
+                { key: "home",     to: "/" },
+                { key: "about",    to: "/about" },
+                { key: "products", to: "/products" },
+                { key: "notices",  to: "/notices" },
+                { key: "contact",  to: "/contact" },
+              ].map(({ key, to }) => (
+                <li key={key}>
                   <Link to={to} className="text-xs text-white/60 transition-colors hover:text-white">
-                    {label}
+                    {t(`nav.${key}`)}
                   </Link>
                 </li>
               ))}
@@ -114,17 +116,17 @@ const Footer = () => {
 
           {/* Help */}
           <div>
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">Help</h4>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">{t("footer.help")}</h4>
             <ul className="space-y-2.5">
-              <li><Link to="/faq" className="text-xs text-white/60 transition-colors hover:text-white">FAQ</Link></li>
-              <li><Link to="/help-center" className="text-xs text-white/60 transition-colors hover:text-white">Help Center</Link></li>
-              <li><Link to="/support" className="text-xs text-white/60 transition-colors hover:text-white">Support</Link></li>
+              <li><Link to="/faq" className="text-xs text-white/60 transition-colors hover:text-white">{t("footer.faq")}</Link></li>
+              <li><Link to="/help-center" className="text-xs text-white/60 transition-colors hover:text-white">{t("footer.helpCenter")}</Link></li>
+              <li><Link to="/support" className="text-xs text-white/60 transition-colors hover:text-white">{t("footer.support")}</Link></li>
             </ul>
           </div>
 
           {/* Follow Us */}
           <div>
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">Follow Us</h4>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">{t("footer.followUs")}</h4>
             <div className="flex items-center gap-3">
               <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-[#F0C924] hover:text-white">
@@ -148,11 +150,11 @@ const Footer = () => {
         {/* ── Bottom row: copyright + legal ── */}
         <div className="flex flex-col items-center justify-between gap-3 pt-6 sm:flex-row">
           <p className="text-xs text-white/30">
-            &copy; {new Date().getFullYear()} Pokhrel Flex Printing. All Rights Reserved.
+            &copy; {new Date().getFullYear()} Pokhrel Flex Printing. {t("footer.rights")}
           </p>
           <div className="flex items-center gap-5">
-            <Link to="/privacy" className="text-xs text-white/30 hover:text-white/60 transition-colors">Privacy</Link>
-            <Link to="/terms" className="text-xs text-white/30 hover:text-white/60 transition-colors">Terms &amp; Conditions</Link>
+            <Link to="/privacy" className="text-xs text-white/30 hover:text-white/60 transition-colors">{t("footer.privacy")}</Link>
+            <Link to="/terms" className="text-xs text-white/30 hover:text-white/60 transition-colors">{t("footer.terms")}</Link>
           </div>
         </div>
 

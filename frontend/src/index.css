@@ -171,6 +171,49 @@ strong, b {
   font-weight: 800;
 }
 
+/* ── Nepali (Poppins + Noto Sans Devanagari fallback) ── */
+:root {
+  --font-nepali: "Poppins", "Noto Sans Devanagari", "Plus Jakarta Sans", sans-serif;
+}
+html[lang="ne"] {
+  --font-jakarta: var(--font-nepali);
+}
+html[lang="ne"] body,
+html[lang="ne"] h1, html[lang="ne"] h2, html[lang="ne"] h3,
+html[lang="ne"] h4, html[lang="ne"] h5, html[lang="ne"] h6 {
+  font-family: var(--font-nepali);
+}
+
+/* Devanagari has no uppercase form and breaks visually with any letter-spacing.
+   Reset both globally while in Nepali mode. */
+html[lang="ne"],
+html[lang="ne"] * {
+  letter-spacing: 0 !important;
+}
+html[lang="ne"] .uppercase,
+html[lang="ne"] [class*="tracking-"] {
+  text-transform: none !important;
+}
+
+.nepali-font-thin            { font-family: var(--font-nepali); font-weight: 100; font-style: normal; }
+.nepali-font-extralight      { font-family: var(--font-nepali); font-weight: 200; font-style: normal; }
+.nepali-font-light           { font-family: var(--font-nepali); font-weight: 300; font-style: normal; }
+.nepali-font-regular         { font-family: var(--font-nepali); font-weight: 400; font-style: normal; }
+.nepali-font-medium          { font-family: var(--font-nepali); font-weight: 500; font-style: normal; }
+.nepali-font-semibold        { font-family: var(--font-nepali); font-weight: 600; font-style: normal; }
+.nepali-font-bold            { font-family: var(--font-nepali); font-weight: 700; font-style: normal; }
+.nepali-font-extrabold       { font-family: var(--font-nepali); font-weight: 800; font-style: normal; }
+.nepali-font-black           { font-family: var(--font-nepali); font-weight: 900; font-style: normal; }
+.nepali-font-thin-italic       { font-family: var(--font-nepali); font-weight: 100; font-style: italic; }
+.nepali-font-extralight-italic { font-family: var(--font-nepali); font-weight: 200; font-style: italic; }
+.nepali-font-light-italic      { font-family: var(--font-nepali); font-weight: 300; font-style: italic; }
+.nepali-font-regular-italic    { font-family: var(--font-nepali); font-weight: 400; font-style: italic; }
+.nepali-font-medium-italic     { font-family: var(--font-nepali); font-weight: 500; font-style: italic; }
+.nepali-font-semibold-italic   { font-family: var(--font-nepali); font-weight: 600; font-style: italic; }
+.nepali-font-bold-italic       { font-family: var(--font-nepali); font-weight: 700; font-style: italic; }
+.nepali-font-extrabold-italic  { font-family: var(--font-nepali); font-weight: 800; font-style: italic; }
+.nepali-font-black-italic      { font-family: var(--font-nepali); font-weight: 900; font-style: italic; }
+
 @keyframes floatUp {
   0% { transform: translateY(100vh) scale(0); opacity: 0; }
   10% { opacity: 0.6; }

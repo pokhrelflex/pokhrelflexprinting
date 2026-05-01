@@ -1,0 +1,167 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "products": "Products",
+    "notices": "Notices",
+    "contact": "Contact"
+  },
+  "hero": {
+    "line1": "You Build,",
+    "line2": "We Print",
+    "line3": "Your Vision",
+    "cta": "Let's Talk"
+  },
+  "marquee": {
+    "vinyl": "Vinyl",
+    "sublimation": "Sublimation",
+    "trophies": "Trophies",
+    "banners": "Banners",
+    "stamps": "Stamps",
+    "businessCards": "Business Cards",
+    "stands": "Stands",
+    "medals": "Medals",
+    "brochures": "Brochures",
+    "signage": "Signage"
+  },
+  "about": {
+    "eyebrow": "About Us",
+    "titleA": "Who We",
+    "titleB": "Are",
+    "leadName": "Pokhrel Flex Printing",
+    "leadBody": " is a printing business based in Nepal offering quality print solutions for retail and wholesale customers.",
+    "subBody": "We specialize in vinyl and flex printing, sublimation cups and materials, custom trophies, medals, table stands, and much more. Whether you need a single piece or a bulk wholesale order, we deliver quality every time."
+  },
+  "stats": {
+    "products": "Products Available",
+    "years": "Years Experience",
+    "customers": "Happy Customers",
+    "categories": "Product Categories"
+  },
+  "section3": {
+    "headlineA": "Everything your",
+    "headlineB": "brand prints.",
+    "items": [
+      { "name": "Visiting Card",      "tag": "Identity" },
+      { "name": "Badge Printing",     "tag": "Identity" },
+      { "name": "Cup Printing",       "tag": "Sublimation" },
+      { "name": "Signage Board",      "tag": "Spatial" },
+      { "name": "T-shirt Print",      "tag": "Apparel" },
+      { "name": "Advertising Board",  "tag": "Outdoor" },
+      { "name": "Event Banners",      "tag": "Events" },
+      { "name": "Trophies & Medals",  "tag": "Recognition" },
+      { "name": "ID Card Printing",   "tag": "Identity" },
+      { "name": "Vinyl Stickers",     "tag": "Adhesive" },
+      { "name": "Sublimation Prints", "tag": "Heat Transfer" },
+      { "name": "Menu Designs",       "tag": "Hospitality" }
+    ]
+  },
+  "section4": {
+    "vertical": "Products We Offer",
+    "products": [
+      {
+        "name": "Vinyl & Flex Printing",
+        "role": "Large Format",
+        "desc": "High-quality vinyl banners, flex prints, standees, stickers, and custom signage for indoor and outdoor use.",
+        "stat1Label": "Materials", "stat1Value": "Premium",
+        "stat2Label": "Sizes", "stat2Value": "Any"
+      },
+      {
+        "name": "Sublimation",
+        "role": "Heat Transfer",
+        "desc": "Sublimation mugs, cups, t-shirts, photo frames, and personalized items with vivid, long-lasting colors.",
+        "stat1Label": "Products", "stat1Value": "50+",
+        "stat2Label": "Colors", "stat2Value": "Vibrant"
+      },
+      {
+        "name": "Trophies & Medals",
+        "role": "Awards",
+        "desc": "Custom trophies, medals, plaques, and recognition items for sports, corporate events, and ceremonies.",
+        "stat1Label": "Designs", "stat1Value": "100+",
+        "stat2Label": "Wholesale", "stat2Value": "Available"
+      },
+      {
+        "name": "Table Stands",
+        "role": "Display & Signage",
+        "desc": "Acrylic and metal table stands, menu holders, nameplates, and display accessories for businesses.",
+        "stat1Label": "Types", "stat1Value": "20+",
+        "stat2Label": "Finish", "stat2Value": "Premium"
+      }
+    ]
+  },
+  "section5": {
+    "eyebrow": "Full Range",
+    "title": "Our Product Categories",
+    "subtitle": "Everything you need in one place — from printing machines to finished products, retail and wholesale.",
+    "categoryFields": {
+      "products": "Products",
+      "description": "Description",
+      "pricing": "Pricing",
+      "selected": "Selected category"
+    },
+    "categories": [
+      {
+        "name": "Flex & Vinyl Printing",
+        "desc": "Large format flex banners, vinyl stickers, standees and outdoor signage",
+        "items": "Banners, Stickers, Standees",
+        "pricing": "Per sq. ft"
+      },
+      {
+        "name": "Sublimation Products",
+        "desc": "Sublimation mugs, cups, t-shirts, phone cases and photo frames",
+        "items": "Mugs, Cups, T-shirts",
+        "pricing": "Per unit"
+      },
+      {
+        "name": "Trophies & Medals",
+        "desc": "Custom trophies, medals, plaques and certificates for any occasion",
+        "items": "Trophies, Medals, Plaques",
+        "pricing": "Wholesale available"
+      }
+    ],
+    "processTitle": "Our Printing Process",
+    "processSteps": [
+      "Place Order",
+      "Design Submission",
+      "Pre-Press Check",
+      "Material Preparation",
+      "Printing",
+      "Quality Control",
+      "Finishing",
+      "Ready for Collection"
+    ]
+  },
+  "section6": {
+    "quote": "We make quality printing accessible and affordable for every business and individual.",
+    "mission": "Our Mission",
+    "values": [
+      { "title": "Quality",    "desc": "Premium materials and professional equipment on every order" },
+      { "title": "Creative",   "desc": "Custom designs and creative solutions for unique requirements" },
+      { "title": "Affordable", "desc": "Competitive pricing for retail and wholesale customers" }
+    ]
+  },
+  "footer": {
+    "headlineA": "Print With",
+    "headlineB": "Confidence.",
+    "getInTouch": "Get In Touch!",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "subscribing": "Sending...",
+    "thanks": "Thank you for subscribing.",
+    "subscribeFail": "Subscription failed. Please try again.",
+    "contactInformation": "Contact Information",
+    "company": "Company",
+    "help": "Help",
+    "followUs": "Follow Us",
+    "country": "Nepal",
+    "rights": "All Rights Reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms & Conditions",
+    "faq": "FAQ",
+    "helpCenter": "Help Center",
+    "support": "Support"
+  },
+  "lang": {
+    "switchTo": "नेपाली"
+  }
+}

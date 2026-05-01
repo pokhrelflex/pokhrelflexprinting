@@ -1,24 +1,26 @@
 import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
 
-const MARQUEE_ITEMS = [
-  "Vinyl",
-  "Sublimation",
-  "Trophies",
-  "Banners",
-  "Stamps",
-  "Business Cards",
-  "Stands",
-  "Medals",
-  "Brochures",
-  "Signage",
+const MARQUEE_KEYS = [
+  "vinyl", "sublimation", "trophies", "banners", "stamps",
+  "businessCards", "stands", "medals", "brochures", "signage",
 ];
 
 export default function Section1() {
   const sectionRef = useRef(null);
+  const { t, i18n } = useTranslation();
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
+  const isNepali = i18n.language === "ne";
+  // Devanagari glyphs are taller/wider than Latin — scale down to keep the
+  // hero from overflowing on three lines, and add line-height so ascenders
+  // (शिरोरेखा) and below-line marks don't collide between rows.
+  const heroFontSize = isNepali
+    ? "clamp(2.25rem, 7.5vw, 6.5rem)"
+    : "clamp(3.25rem, 11vw, 9.5rem)";
+  const heroLineHeight = isNepali ? 1.25 : 0.86;
 
   useEffect(() => {
     setMounted(true);
@@ -51,14 +53,14 @@ export default function Section1() {
           initial={{ opacity: 0, y: 24 }}
           animate={mounted ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.18, duration: 0.95, ease }}
-          className="premium-font-galdgderbold uppercase text-white text-center leading-[0.86] tracking-[-0.01em]"
-          style={{ fontSize: "clamp(3.25rem, 11vw, 9.5rem)" }}
+          className="premium-font-galdgderbold uppercase text-white text-center tracking-[-0.01em]"
+          style={{ fontSize: heroFontSize, lineHeight: heroLineHeight }}
         >
-          You Build,
+          {t("hero.line1")}
           <br />
-          We Print
+          {t("hero.line2")}
           <br />
-          Your Vision
+          {t("hero.line3")}
         </motion.h1>
       </motion.div>
 
@@ -74,7 +76,7 @@ export default function Section1() {
           to="/contact"
           className="group inline-flex items-center gap-3 text-xs sm:text-sm font-bold uppercase tracking-[0.28em] text-white transition-colors duration-300 hover:text-[#F0C924]"
         >
-          Let&apos;s Talk
+          {t("hero.cta")}
           <svg
             className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5"
             fill="none"
@@ -92,10 +94,10 @@ export default function Section1() {
         <div className="flex animate-marquee whitespace-nowrap py-3 sm:py-4">
           {[...Array(2)].map((_, dup) => (
             <div key={dup} className="flex shrink-0 items-center">
-              {MARQUEE_ITEMS.map((item, i) => (
+              {MARQUEE_KEYS.map((key, i) => (
                 <span key={`${dup}-${i}`} className="flex items-center">
                   <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.32em] text-white/55 px-6 sm:px-10">
-                    {item}
+                    {t(`marquee.${key}`)}
                   </span>
                   <span className="text-[#F0C924]">●</span>
                 </span>
