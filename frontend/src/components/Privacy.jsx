@@ -26,7 +26,7 @@ export default function Privacy() {
           </section>
           <section>
             <h2 className="text-base font-bold text-[#1A1A1A] mb-2">Contact Us</h2>
-            <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:pokhrelflexprinting@gmail.com" className="text-[#1B4F8A] hover:underline">pokhrelflexprinting@gmail.com</a>.</p>
+            <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:pokhrelflexprinting@gmail.com" className="text-[#003A4D] hover:underline">pokhrelflexprinting@gmail.com</a>.</p>
           </section>
         </div>
       </div>

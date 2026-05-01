@@ -53,7 +53,7 @@ const Footer = () => {
               <button
                 type="submit"
                 disabled={isSubscribing}
-                className="shrink-0 bg-[#F5A623] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#F5A623]/85 disabled:cursor-not-allowed disabled:opacity-60"
+                className="shrink-0 bg-[#F0C924] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#F0C924]/85 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSubscribing ? "Sending..." : "Subscribe"}
               </button>
@@ -71,19 +71,19 @@ const Footer = () => {
             <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">Contact Information</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-2 text-xs text-white/60">
-                <svg className="h-3.5 w-3.5 mt-0.5 shrink-0 text-[#F5A623]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="h-3.5 w-3.5 mt-0.5 shrink-0 text-[#F0C924]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 <a href="mailto:pokhrelflexprinting@gmail.com" className="hover:text-white transition-colors break-all">pokhrelflexprinting@gmail.com</a>
               </li>
               <li className="flex items-start gap-2 text-xs text-white/60">
-                <svg className="h-3.5 w-3.5 mt-0.5 shrink-0 text-[#F5A623]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="h-3.5 w-3.5 mt-0.5 shrink-0 text-[#F0C924]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
                 <span>+977 XXX XXX XXXX</span>
               </li>
               <li className="flex items-start gap-2 text-xs text-white/60">
-                <svg className="h-3.5 w-3.5 mt-0.5 shrink-0 text-[#F5A623]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="h-3.5 w-3.5 mt-0.5 shrink-0 text-[#F0C924]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -97,9 +97,11 @@ const Footer = () => {
             <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">Company</h4>
             <ul className="space-y-2.5">
               {[
-                { label: "Home",      to: "/" },
-                { label: "About",     to: "/about" },
-                { label: "Portfolio", to: "/portfolio" },
+                { label: "Home",     to: "/" },
+                { label: "About",    to: "/about" },
+                { label: "Products", to: "/products" },
+                { label: "Notices",  to: "/notices" },
+                { label: "Contact",  to: "/contact" },
               ].map(({ label, to }) => (
                 <li key={label}>
                   <Link to={to} className="text-xs text-white/60 transition-colors hover:text-white">
@@ -125,13 +127,13 @@ const Footer = () => {
             <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-4">Follow Us</h4>
             <div className="flex items-center gap-3">
               <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-[#F5A623] hover:text-white">
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-[#F0C924] hover:text-white">
                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
                 </svg>
               </a>
               <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-[#F5A623] hover:text-white">
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors hover:bg-[#F0C924] hover:text-white">
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <rect x="2" y="2" width="20" height="20" rx="5" />
                   <circle cx="12" cy="12" r="5" />

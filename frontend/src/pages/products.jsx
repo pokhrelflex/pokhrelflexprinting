@@ -46,13 +46,13 @@ const CAPABILITIES = [
   "Delivery available",
 ];
 
-export default function Portfolio() {
+export default function Products() {
   return (
     <>
-      <section className="relative overflow-hidden bg-[#0D1F3C] pt-32 pb-24">
-        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ background: "radial-gradient(ellipse at 40% 60%, #1B4F8A 0%, transparent 65%)" }} />
+      <section className="relative overflow-hidden bg-[#003A4D] pt-32 pb-24">
+        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ background: "radial-gradient(ellipse at 40% 60%, #003A4D 0%, transparent 65%)" }} />
         <div className="relative z-10 mx-auto max-w-6xl px-6">
-          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-[#F5A623]">Portfolio</p>
+          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-[#F0C924]">Products</p>
           <div className="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-end">
             <h1 className="premium-font-galdgderbold text-4xl leading-[1] text-white sm:text-5xl lg:text-7xl">
               Print products we deliver with care.
@@ -68,13 +68,13 @@ export default function Portfolio() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {CATEGORIES.map((category, index) => (
-              <article key={category.title} className="group relative overflow-hidden border border-[#1A1A1A]/10 bg-white p-6 shadow-[0_14px_34px_rgba(45,45,45,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#1B4F8A]/25">
-                <div className="absolute -right-4 -top-6 premium-font-galdgderbold text-8xl text-[#1B4F8A]/5">
+              <article key={category.title} className="group relative overflow-hidden border border-[#1A1A1A]/10 bg-white p-6 shadow-[0_14px_34px_rgba(45,45,45,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#003A4D]/25">
+                <div className="absolute -right-4 -top-6 premium-font-galdgderbold text-8xl text-[#003A4D]/5">
                   {String(index + 1).padStart(2, "0")}
                 </div>
                 <div className="relative z-10">
-                  <span className="text-xs font-black text-[#F5A623]">{String(index + 1).padStart(2, "0")}</span>
-                  <h2 className="mt-5 text-lg font-bold text-[#1B4F8A]">{category.title}</h2>
+                  <span className="text-xs font-black text-[#F0C924]">{String(index + 1).padStart(2, "0")}</span>
+                  <h2 className="mt-5 text-lg font-bold text-[#003A4D]">{category.title}</h2>
                   <p className="mt-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#1A1A1A]/38">{category.examples}</p>
                   <p className="mt-4 text-sm leading-relaxed text-[#1A1A1A]/55">{category.note}</p>
                 </div>
@@ -84,27 +84,27 @@ export default function Portfolio() {
 
           <div className="mt-16 grid gap-8 bg-[#F2F0EC] p-6 sm:p-8 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#F5A623]">What we offer</p>
-              <h2 className="mt-3 premium-font-galdgdersemi text-3xl text-[#1B4F8A]">More than just printing.</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#F0C924]">What we offer</p>
+              <h2 className="mt-3 premium-font-galdgdersemi text-3xl text-[#003A4D]">More than just printing.</h2>
               <p className="mt-4 text-sm leading-relaxed text-[#1A1A1A]/58">
                 Every order gets attention to detail — from material choice to final quality check before handover.
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               {CAPABILITIES.map((item) => (
-                <div key={item} className="border border-[#1B4F8A]/10 bg-white px-4 py-3 text-sm font-medium text-[#1A1A1A]/75">
+                <div key={item} className="border border-[#003A4D]/10 bg-white px-4 py-3 text-sm font-medium text-[#1A1A1A]/75">
                   {item}
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="mt-12 border border-[#1B4F8A]/12 bg-[#1B4F8A] p-8 text-white">
+          <div className="mt-12 border border-[#003A4D]/12 bg-[#003A4D] p-8 text-white">
             <h3 className="premium-font-galdgdersemi text-2xl">Need something not listed here?</h3>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/58">
               Share your idea, size, quantity, and design. We will check whether we can produce it and give you a quote within 24 hours.
             </p>
-            <Link to="/contact" className="mt-6 inline-flex bg-[#F5A623] px-7 py-3 text-xs font-semibold uppercase tracking-widest text-white hover:bg-[#F5A623]/85">
+            <Link to="/contact" className="mt-6 inline-flex bg-[#F0C924] px-7 py-3 text-xs font-semibold uppercase tracking-widest text-white hover:bg-[#F0C924]/85">
               Send print request
             </Link>
           </div>

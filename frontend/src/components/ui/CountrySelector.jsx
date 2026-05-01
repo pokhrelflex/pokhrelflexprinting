@@ -45,7 +45,7 @@ export default function CountrySelector({ value, onChange, placeholder = 'Countr
   return (
     <div ref={containerRef} className="relative w-full">
       <div
-        className={`w-full border bg-white/60 backdrop-blur-sm px-4 py-3 text-sm flex items-center gap-2 transition-colors cursor-pointer ${open ? 'border-[#1B4F8A] bg-white/80' : 'border-[#1A1A1A]/8'}`}
+        className={`w-full border bg-white/60 backdrop-blur-sm px-4 py-3 text-sm flex items-center gap-2 transition-colors cursor-pointer ${open ? 'border-[#003A4D] bg-white/80' : 'border-[#1A1A1A]/8'}`}
         onClick={handleOpen}
       >
         {value && !open && (
@@ -109,7 +109,7 @@ function CountryOption({ country, selected, onSelect }) {
     <button
       type="button"
       onClick={() => onSelect(country)}
-      className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left transition-colors hover:bg-[#1B4F8A]/5 ${selected ? 'bg-[#1B4F8A]/8 text-[#1B4F8A]' : 'text-[#1A1A1A]'}`}
+      className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left transition-colors hover:bg-[#003A4D]/5 ${selected ? 'bg-[#003A4D]/8 text-[#003A4D]' : 'text-[#1A1A1A]'}`}
     >
       <span className="w-5 h-4 overflow-hidden flex-shrink-0 inline-flex items-center">
         <img src={flagUrl(country.code)} srcSet={`${flagUrl2x(country.code)} 2x`} alt="" className="w-full h-full object-contain" />

@@ -30,7 +30,7 @@ export default function Terms() {
           </section>
           <section>
             <h2 className="text-base font-bold text-[#1A1A1A] mb-2">Contact</h2>
-            <p>Questions about these Terms? Contact us at <a href="mailto:pokhrelflexprinting@gmail.com" className="text-[#1B4F8A] hover:underline">pokhrelflexprinting@gmail.com</a>.</p>
+            <p>Questions about these Terms? Contact us at <a href="mailto:pokhrelflexprinting@gmail.com" className="text-[#003A4D] hover:underline">pokhrelflexprinting@gmail.com</a>.</p>
           </section>
         </div>
       </div>

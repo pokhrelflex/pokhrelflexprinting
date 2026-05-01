@@ -79,7 +79,7 @@ export default function Contact() {
 
             {/* Left — Headline + Contact Details */}
             <div>
-              <h1 className="premium-font-galdgderbold text-3xl sm:text-4xl md:text-5xl text-[#1B4F8A] leading-tight">
+              <h1 className="premium-font-galdgderbold text-3xl sm:text-4xl md:text-5xl text-[#003A4D] leading-tight">
                 We are ready to help you print your vision
               </h1>
               <p className="mt-5 text-sm leading-relaxed text-[#1A1A1A]/50 max-w-md">
@@ -110,10 +110,10 @@ export default function Contact() {
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[#1A1A1A]">Social</h4>
                     <div className="mt-3 flex items-center gap-4">
-                      <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#1A1A1A]/40 transition hover:text-[#1B4F8A]" aria-label="Facebook">
+                      <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#1A1A1A]/40 transition hover:text-[#003A4D]" aria-label="Facebook">
                         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
                       </a>
-                      <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#1A1A1A]/40 transition hover:text-[#1B4F8A]" aria-label="Instagram">
+                      <a href="#" target="_blank" rel="noopener noreferrer" className="text-[#1A1A1A]/40 transition hover:text-[#003A4D]" aria-label="Instagram">
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="5" /><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" /></svg>
                       </a>
                     </div>
@@ -123,15 +123,15 @@ export default function Contact() {
             </div>
 
             {/* Right — Contact Form */}
-            <div className="bg-[#1B4F8A]/5 backdrop-blur-sm p-6 sm:p-8 md:p-10">
-              <h2 className="premium-font-galdgdersemi text-xl sm:text-2xl text-[#1B4F8A]">Get a Quote</h2>
+            <div className="bg-[#003A4D]/5 backdrop-blur-sm p-6 sm:p-8 md:p-10">
+              <h2 className="premium-font-galdgdersemi text-xl sm:text-2xl text-[#003A4D]">Get a Quote</h2>
               <p className="mt-2 text-sm text-[#1A1A1A]/50">
                 Tell us what you need printed and we'll get back to you within 24 hours.
               </p>
 
               {submitted ? (
                 <div className="flex flex-col items-center justify-center py-10 sm:py-12 text-center">
-                  <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-[#1B4F8A]/10 text-[#1B4F8A] mb-4">
+                  <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-[#003A4D]/10 text-[#003A4D] mb-4">
                     <svg className="h-7 w-7 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -142,7 +142,7 @@ export default function Contact() {
                   </p>
                   <button
                     onClick={handleReset}
-                    className="mt-6 w-full bg-[#1B4F8A] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#1B4F8A]/90"
+                    className="mt-6 w-full bg-[#F0C924] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#F0C924]/90"
                   >
                     Send Another Message
                   </button>
@@ -155,7 +155,7 @@ export default function Contact() {
                     required
                     value={form.name}
                     onChange={handleChange}
-                    className="w-full border border-[#1A1A1A]/8 bg-white/60 backdrop-blur-sm px-4 py-3 text-sm text-[#1A1A1A] outline-none transition-colors focus:border-[#1B4F8A] focus:bg-white/80 placeholder:text-[#1A1A1A]/30"
+                    className="w-full border border-[#1A1A1A]/8 bg-white/60 backdrop-blur-sm px-4 py-3 text-sm text-[#1A1A1A] outline-none transition-colors focus:border-[#003A4D] focus:bg-white/80 placeholder:text-[#1A1A1A]/30"
                     placeholder="Full name"
                   />
 
@@ -165,7 +165,7 @@ export default function Contact() {
                     required
                     value={form.email}
                     onChange={handleChange}
-                    className="w-full border border-[#1A1A1A]/8 bg-white/60 backdrop-blur-sm px-4 py-3 text-sm text-[#1A1A1A] outline-none transition-colors focus:border-[#1B4F8A] focus:bg-white/80 placeholder:text-[#1A1A1A]/30"
+                    className="w-full border border-[#1A1A1A]/8 bg-white/60 backdrop-blur-sm px-4 py-3 text-sm text-[#1A1A1A] outline-none transition-colors focus:border-[#003A4D] focus:bg-white/80 placeholder:text-[#1A1A1A]/30"
                     placeholder="Email"
                   />
 
@@ -177,7 +177,7 @@ export default function Contact() {
                   />
 
                   {/* Phone */}
-                  <div className="flex border border-[#1A1A1A]/8 bg-white/60 backdrop-blur-sm focus-within:border-[#1B4F8A] focus-within:bg-white/80 transition-colors">
+                  <div className="flex border border-[#1A1A1A]/8 bg-white/60 backdrop-blur-sm focus-within:border-[#003A4D] focus-within:bg-white/80 transition-colors">
                     <div className="flex items-center gap-1.5 pl-3 pr-2 border-r border-[#1A1A1A]/8 flex-shrink-0">
                       {prefixFlag && (
                         <img
@@ -211,7 +211,7 @@ export default function Contact() {
                     rows={4}
                     value={form.message}
                     onChange={handleChange}
-                    className="w-full border border-[#1A1A1A]/10 bg-white px-4 py-3 text-sm text-[#1A1A1A] outline-none transition-colors focus:border-[#1B4F8A] resize-none placeholder:text-[#1A1A1A]/30"
+                    className="w-full border border-[#1A1A1A]/10 bg-white px-4 py-3 text-sm text-[#1A1A1A] outline-none transition-colors focus:border-[#003A4D] resize-none placeholder:text-[#1A1A1A]/30"
                     placeholder="What would you like to print? (size, quantity, material, etc.)"
                   />
 
@@ -220,7 +220,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-[#1B4F8A] py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#1B4F8A]/90 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full bg-[#F0C924] py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#F0C924]/90 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     <span>{loading ? "Sending..." : "Send a message"}</span>
                     {!loading && (
@@ -240,13 +240,13 @@ export default function Contact() {
       {/* ═══ SECTION 2 — Steps ═══ */}
       <section className="border-t border-[#1A1A1A]/8 bg-white py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="premium-font-galdgdersemi text-xl sm:text-2xl text-[#1B4F8A] italic mb-10 sm:mb-14">
+          <h2 className="premium-font-galdgdersemi text-xl sm:text-2xl text-[#003A4D] italic mb-10 sm:mb-14">
             How to work with Pokhrel Flex Printing
           </h2>
           <div className="grid gap-6 sm:gap-8 grid-cols-2 lg:grid-cols-4">
             {STEPS.map((step) => (
               <div key={step.num} className="flex flex-col items-start">
-                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center border-2 border-[#1B4F8A] text-xs sm:text-sm font-bold text-[#1B4F8A]">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center border-2 border-[#003A4D] text-xs sm:text-sm font-bold text-[#003A4D]">
                   {step.num}
                 </div>
                 <h3 className="mt-3 sm:mt-4 text-xs sm:text-sm font-bold text-[#1A1A1A]">{step.title}</h3>

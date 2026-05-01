@@ -1,237 +1,144 @@
-import { useState, useEffect, Fragment } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import useScrollReveal from "./useScrollReveal";
+import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useAnimationFrame,
+  useReducedMotion,
+  useSpring,
+  wrap,
+} from "framer-motion";
 
-const CARD_W = 1024;
-const CARD_GAP = 32;
-const REPEATS = 3;
-const STEP_MS = 4800;
-
-const getCarouselMetrics = () => {
-  if (typeof window === "undefined") return { cardWidth: CARD_W, cardGap: CARD_GAP };
-  const width = window.innerWidth;
-  if (width < 480) return { cardWidth: Math.max(288, width - 32), cardGap: 12 };
-  if (width < 768) return { cardWidth: Math.min(420, width - 40), cardGap: 16 };
-  if (width < 1024) return { cardWidth: Math.min(720, width - 64), cardGap: 24 };
-  return { cardWidth: CARD_W, cardGap: CARD_GAP };
-};
-
-const STEPS = [
-  {
-    num: "01", short: "Your Order",
-    title: "Tell us what you need",
-    desc: "Share your printing requirements — product type, quantity, size, and any design details. The more information you provide, the better we can deliver exactly what you want.",
-    callout: { value: "24 hrs", label: "Average response time" },
-    icon: (
-      <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="butt" strokeLinejoin="miter" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-      </svg>
-    ),
-  },
-  {
-    num: "02", short: "Design",
-    title: "We prepare or review your design",
-    desc: "Send us your artwork or let our in-house designers create one for you. We review every file before production to ensure colours, dimensions, and resolution are print-ready.",
-    callout: { value: "Free", label: "Design review included" },
-    icon: (
-      <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="butt" strokeLinejoin="miter" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-      </svg>
-    ),
-  },
-  {
-    num: "03", short: "Printing",
-    title: "Quality printing begins",
-    desc: "We use professional-grade equipment and premium materials to produce your order. Every print is monitored for colour accuracy, sharpness, and consistency.",
-    callout: { value: "Premium", label: "Materials & equipment" },
-    icon: (
-      <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="butt" strokeLinejoin="miter" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-      </svg>
-    ),
-  },
-  {
-    num: "04", short: "Quality Check",
-    title: "We inspect every item",
-    desc: "Before your order leaves our workshop, each item goes through a thorough quality check. We only deliver products that meet our standards — and yours.",
-    callout: { value: "100%", label: "Quality checked" },
-    icon: (
-      <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="butt" strokeLinejoin="miter" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-  },
-  {
-    num: "05", short: "Delivery",
-    title: "Ready for pickup or delivery",
-    desc: "Collect from our store or let us deliver to your door. We keep you updated at every step and ensure your order arrives safely and on time.",
-    callout: { value: "On Time", label: "Pickup or delivery" },
-    icon: (
-      <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="butt" strokeLinejoin="miter" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
-      </svg>
-    ),
-  },
+const PRODUCTS = [
+  { num: "01", name: "Visiting Card",      tag: "Identity" },
+  { num: "02", name: "Badge Printing",     tag: "Identity" },
+  { num: "03", name: "Cup Printing",       tag: "Sublimation" },
+  { num: "04", name: "Signage Board",      tag: "Spatial" },
+  { num: "05", name: "T-shirt Print",      tag: "Apparel" },
+  { num: "06", name: "Advertising Board",  tag: "Outdoor" },
+  { num: "07", name: "Event Banners",      tag: "Events" },
+  { num: "08", name: "Trophies & Medals",  tag: "Recognition" },
+  { num: "09", name: "ID Card Printing",   tag: "Identity" },
+  { num: "10", name: "Vinyl Stickers",     tag: "Adhesive" },
+  { num: "11", name: "Sublimation Prints", tag: "Heat Transfer" },
+  { num: "12", name: "Menu Designs",       tag: "Hospitality" },
 ];
 
-export default function Section3() {
-  const [sectionRef, visible] = useScrollReveal(0.1);
+// 12 cards = 1 copy = 25 baseX units. Each card advanced per scroll distance
+// is driven by this number — higher = more cards per scroll = faster scrub.
+const CARDS_TO_SHOW = 11;
+const COPY_UNITS = 25;
+const TOTAL_CARDS = PRODUCTS.length;
+const SCROLL_BASEX_END = (CARDS_TO_SHOW / TOTAL_CARDS) * COPY_UNITS;
+// Drift rate: baseVelocity units → baseX units/sec. baseVelocity=1 gives a
+// slow but clearly visible ambient drift (~7 px/s on desktop strip).
+const DRIFT_RATE_PER_UNIT = 0.04;
+
+function ProductCard({ num, name, tag }) {
+  return (
+    <div className="shrink-0 w-[260px] sm:w-[300px] lg:w-[340px] mr-4 sm:mr-6 group">
+      {/* Text above the visual — not inside the box */}
+      <div className="mb-4 sm:mb-5">
+        <h3
+          className="font-light text-[#6F1C00] leading-tight tracking-tight"
+          style={{ fontSize: "clamp(1.1rem, 1.5vw, 1.5rem)" }}
+        >
+          {name}
+        </h3>
+        <p className="mt-1 text-[10px] sm:text-xs font-light uppercase tracking-[0.06em] text-[#1A1A1A]/45">
+          {tag}
+        </p>
+      </div>
+      {/* Visual block */}
+      <div className="aspect-[4/5] relative overflow-hidden bg-[#003A4D] transition-colors duration-500 group-hover:bg-[#001E2C]">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span
+            className="premium-font-galdgderbold text-white/[0.07] leading-none select-none"
+            style={{ fontSize: "clamp(7rem, 11vw, 13rem)" }}
+          >
+            {num}
+          </span>
+        </div>
+        <div className="absolute top-5 left-5 sm:top-6 sm:left-6">
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#F0C924]">
+            [{num}]
+          </span>
+        </div>
+        <div className="absolute bottom-0 left-0 h-[3px] w-12 bg-[#F0C924] transition-all duration-500 group-hover:w-24" />
+      </div>
+    </div>
+  );
+}
+
+function ProductMarquee({ products, scrollProgress, baseVelocity = 1 }) {
   const prefersReducedMotion = useReducedMotion();
-  const [virtualPos, setVirtualPos] = useState(STEPS.length);
-  const [progress, setProgress] = useState(0);
-  const [instant, setInstant] = useState(false);
-  const [carouselMetrics, setCarouselMetrics] = useState(getCarouselMetrics);
 
-  const active = ((virtualPos % STEPS.length) + STEPS.length) % STEPS.length;
+  // Scroll-tied baseline — scroll [0, 1] → baseX [0, SCROLL_BASEX_END]
+  const scrollBaseXRaw = useTransform(scrollProgress, [0, 1], [0, SCROLL_BASEX_END]);
+  // Spring-smooth the scroll-tied component for buttery scrubbing
+  const scrollBaseX = useSpring(scrollBaseXRaw, { stiffness: 200, damping: 40, mass: 0.5 });
+  // Continuous ambient drift accumulator — never pauses
+  const driftX = useMotionValue(0);
+  // Combined position
+  const baseX = useTransform([scrollBaseX, driftX], ([s, d]) => s + d);
+  const x = useTransform(baseX, (v) => `-${wrap(0, COPY_UNITS, v)}%`);
 
-  useEffect(() => {
-    if (!visible || prefersReducedMotion) return;
-    let start = performance.now();
-    let raf;
-    const tick = (now) => {
-      const pct = (now - start) / STEP_MS;
-      if (pct >= 1) {
-        setVirtualPos((prev) => prev + 1);
-        setProgress(0);
-        start = now;
-      } else {
-        setProgress(pct);
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [visible, virtualPos, prefersReducedMotion]);
-
-  useEffect(() => {
-    const updateMetrics = () => setCarouselMetrics(getCarouselMetrics());
-    updateMetrics();
-    window.addEventListener("resize", updateMetrics);
-    return () => window.removeEventListener("resize", updateMetrics);
-  }, []);
-
-  const goTo = (i) => {
-    const currentActive = ((virtualPos % STEPS.length) + STEPS.length) % STEPS.length;
-    let diff = i - currentActive;
-    if (diff > STEPS.length / 2) diff -= STEPS.length;
-    if (diff < -STEPS.length / 2) diff += STEPS.length;
-    setVirtualPos((prev) => prev + diff);
-    setProgress(0);
-  };
-
-  const handleAnimationComplete = () => {
-    if (instant) { setInstant(false); return; }
-    if (virtualPos >= STEPS.length * 2) { setInstant(true); setVirtualPos((prev) => prev - STEPS.length); }
-    else if (virtualPos < STEPS.length) { setInstant(true); setVirtualPos((prev) => prev + STEPS.length); }
-  };
-
-  const RENDERED = Array.from({ length: REPEATS }).flatMap(() => STEPS);
-  const { cardWidth, cardGap } = carouselMetrics;
-  const slideTransition = instant || prefersReducedMotion ? { duration: 0 } : { duration: 1.05, ease: [0.22, 1, 0.36, 1] };
+  useAnimationFrame((t, delta) => {
+    if (prefersReducedMotion) return;
+    const driftDeltaUnits = baseVelocity * DRIFT_RATE_PER_UNIT * (delta / 1000);
+    driftX.set(driftX.get() + driftDeltaUnits);
+  });
 
   return (
-    <section ref={sectionRef} id="how-it-works" className="relative bg-white py-16 sm:py-24 lg:py-28 overflow-hidden">
-      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
-        <div className={`text-center mb-8 sm:mb-16 lg:mb-20 transition-all duration-700 motion-reduce:transition-none ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#F5A623] mb-3">Simple Process</p>
-          <h2 className="premium-font-galdgderbold text-2xl sm:text-4xl lg:text-5xl text-[#1A1A1A] leading-tight">How It Works</h2>
-          <p className="mx-auto mt-3 sm:mt-4 max-w-xl text-xs sm:text-base leading-relaxed text-[#1A1A1A]/55">
-            From first contact to final delivery — a clear, transparent process built around your needs.
-          </p>
+    <div
+      className="overflow-hidden w-full"
+      aria-hidden={prefersReducedMotion ? undefined : "true"}
+    >
+      <motion.div className="flex w-max" style={{ x, willChange: "transform" }}>
+        {[0, 1, 2, 3].map((dup) => (
+          <div key={dup} className="flex shrink-0">
+            {products.map((p) => (
+              <ProductCard key={`${dup}-${p.num}`} {...p} />
+            ))}
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+export default function Section3() {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  return (
+    <section
+      ref={sectionRef}
+      id="how-it-works"
+      className="relative bg-white"
+      style={{ height: "250vh" }}
+    >
+      <div className="sticky top-0 h-[100vh] min-h-[640px] flex flex-col justify-start pt-20 sm:pt-24 lg:pt-28 overflow-hidden">
+        {/* ── Heading block ── */}
+        <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 mb-10 sm:mb-14 lg:mb-16">
+          <div className="text-center">
+            <h2
+              className="premium-font-galdgderbold uppercase text-[#003A4D] leading-[0.92] tracking-tight"
+              style={{ fontSize: "clamp(2.25rem, 6vw, 4.75rem)" }}
+            >
+              Everything your
+              <br />
+              brand prints.
+            </h2>
+          </div>
         </div>
 
-        <div className={`relative flex items-start mb-8 sm:mb-10 transition-all duration-700 delay-200 motion-reduce:transition-none ${visible ? "opacity-100" : "opacity-0"}`}>
-          {STEPS.map((s, i) => {
-            const isActive = active === i;
-            const isDone = i < active;
-            const connectorFill = isDone ? 1 : isActive ? progress : 0;
-            return (
-              <Fragment key={s.num}>
-                <button
-                  type="button"
-                  onClick={() => goTo(i)}
-                  className="relative flex min-h-11 min-w-11 flex-col items-center group shrink-0 touch-manipulation"
-                  aria-label={`Go to step ${s.num}: ${s.short}`}
-                >
-                  <div className={`w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center border-2 transition-all duration-300 motion-reduce:transition-none ${isActive ? "bg-[#1B4F8A] border-[#1B4F8A] scale-110 shadow-lg shadow-[#1B4F8A]/25" : isDone ? "bg-[#1B4F8A] border-[#1B4F8A]" : "bg-white border-[#1B4F8A]/20 group-hover:border-[#1B4F8A]/50"}`}>
-                    {isDone ? (
-                      <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="butt" d="M5 13l4 4L19 7" />
-                      </svg>
-                    ) : (
-                      <span className={`text-[11px] font-bold transition-colors duration-200 ${isActive ? "text-white" : "text-[#1B4F8A]/40 group-hover:text-[#1B4F8A]/80"}`}>{s.num}</span>
-                    )}
-                  </div>
-                  <span className={`hidden sm:block mt-2.5 text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap transition-colors duration-200 ${isActive ? "text-[#1B4F8A]" : isDone ? "text-[#1B4F8A]/40" : "text-[#1A1A1A]/25 group-hover:text-[#1A1A1A]/55"}`}>
-                    {s.short}
-                  </span>
-                </button>
-                {i < STEPS.length - 1 && (
-                  <div className="flex-1 h-[2px] bg-[#1B4F8A]/8 relative mx-1 sm:mx-2 mt-[18px] sm:mt-[19px] shrink">
-                    <div className="absolute inset-y-0 left-0 bg-[#F5A623]" style={{ width: `${connectorFill * 100}%`, transition: "width 0.08s linear" }} />
-                  </div>
-                )}
-              </Fragment>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="relative w-full overflow-hidden py-4 sm:py-6">
-        <motion.div
-          className="flex"
-          style={{ gap: `${cardGap}px`, willChange: "transform" }}
-          animate={{ x: `calc(50% - ${(virtualPos + 0.5) * (cardWidth + cardGap) - cardGap / 2}px)` }}
-          transition={slideTransition}
-          onAnimationComplete={handleAnimationComplete}
-        >
-          {RENDERED.map((s, pos) => {
-            const isActive = pos === virtualPos;
-            const stepIndex = pos % STEPS.length;
-            return (
-              <motion.div
-                key={pos}
-                onClick={() => goTo(stepIndex)}
-                style={{ width: `${cardWidth}px`, transformOrigin: "center center" }}
-                animate={{ scale: isActive ? 1 : 0.94, opacity: isActive ? 1 : 0.38 }}
-                transition={slideTransition}
-                whileHover={!isActive ? { opacity: 0.55 } : {}}
-                className="shrink-0 cursor-pointer grid grid-cols-1 items-stretch overflow-hidden md:grid-cols-[minmax(0,1fr)_260px] lg:grid-cols-[minmax(0,1fr)_280px]"
-              >
-                <div className="relative overflow-hidden bg-[#F7F6F4] p-5 sm:p-8 lg:p-12">
-                  <div className="absolute -right-2 -top-2 font-black text-[#1B4F8A]/[0.04] leading-none select-none pointer-events-none" style={{ fontSize: "clamp(6rem, 18vw, 11rem)" }}>
-                    {s.num}
-                  </div>
-                  <div className="relative z-10 flex flex-col h-full">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F5A623] mb-4">Step {s.num}</p>
-                    <h3 className="premium-font-galdgderbold text-[1.45rem] sm:text-[1.85rem] text-[#1A1A1A] mb-4 leading-tight">{s.title}</h3>
-                    <p className="text-sm leading-[1.75] text-[#1A1A1A]/60 max-w-lg sm:leading-[1.85]">{s.desc}</p>
-                  </div>
-                </div>
-                <div className="relative bg-[#1B4F8A] p-5 sm:p-8 lg:p-10 flex flex-col justify-between min-h-[180px] sm:min-h-[220px] md:min-h-[260px] overflow-hidden">
-                  <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
-                  <div className="relative z-10 w-12 h-12 bg-white/10 flex items-center justify-center text-white mb-auto">{s.icon}</div>
-                  <div className="relative z-10 mt-5 sm:mt-8">
-                    <div className="text-2xl sm:text-4xl font-black text-[#F5A623] leading-none mb-2">{s.callout.value}</div>
-                    <div className="text-xs text-white/45 uppercase tracking-widest">{s.callout.label}</div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-3">
-        <button type="button" onClick={() => goTo((active - 1 + STEPS.length) % STEPS.length)} className="flex min-h-11 items-center gap-2 px-5 py-2.5 border border-[#1B4F8A]/15 text-xs font-semibold text-[#1B4F8A]/50 hover:border-[#1B4F8A]/40 hover:text-[#1B4F8A] transition-all duration-200">← Prev</button>
-        <button type="button" onClick={() => goTo((active + 1) % STEPS.length)} className="flex min-h-11 items-center gap-2 px-5 py-2.5 bg-[#1B4F8A] text-xs font-semibold text-white hover:bg-[#1B4F8A]/85 transition-all duration-200">Next →</button>
-        <div className="flex items-center gap-1.5 ml-3">
-          {STEPS.map((_, i) => (
-            <button key={i} type="button" onClick={() => goTo(i)} aria-label={`Go to process step ${i + 1}`} className="flex min-h-11 min-w-6 items-center justify-center">
-              <span className={`block transition-all duration-200 ${i === active ? "h-1.5 w-5 bg-[#1B4F8A]" : "h-1.5 w-1.5 bg-[#1B4F8A]/20 hover:bg-[#1B4F8A]/50"}`} />
-            </button>
-          ))}
-        </div>
+        {/* ── Sticky-pinned marquee: scroll-tied + ambient auto-drift ── */}
+        <ProductMarquee products={PRODUCTS} scrollProgress={scrollYProgress} baseVelocity={10} />
       </div>
     </section>
   );

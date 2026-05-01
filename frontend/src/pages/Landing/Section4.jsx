@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
-import useScrollReveal from "./useScrollReveal";
 
 const PRODUCTS = [
   {
@@ -23,11 +22,6 @@ const PRODUCTS = [
     desc: "Acrylic and metal table stands, menu holders, nameplates, and display accessories for businesses.",
     stats: [{ label: "Types", value: "20+" }, { label: "Finish", value: "Premium" }],
   },
-];
-
-const TABS = [
-  { tab: "Our Products", cardTitle: "Quality Products for Every Need", desc: "From large-format vinyl prints to sublimation and awards — we supply everything you need for your printing requirements, both retail and wholesale." },
-  { tab: "Our Services", cardTitle: "Full-Service Printing Partner", desc: "We don't just print — we design, produce, quality-check, and deliver. Our team handles your entire printing project so you can focus on your business." },
 ];
 
 const STACK_POSITIONS = {
@@ -77,16 +71,16 @@ function ProductCard({ p, index, progress, pos, layout, reducedMotion }) {
   const rotate = useSpring(rawRotate, spring);
   const isGlass = index % 2 === 1;
   const cardStyle = isGlass
-    ? { y, x, rotate, zIndex: index + 1, background: "rgba(255,255,255,0.85)", backdropFilter: "blur(16px) saturate(120%)", WebkitBackdropFilter: "blur(16px) saturate(120%)", border: "1px solid rgba(255,255,255,0.7)", boxShadow: "0 20px 56px rgba(27,79,138,0.22), 0 4px 12px rgba(0,0,0,0.08)", isolation: "isolate" }
-    : { y, x, rotate, zIndex: index + 1, backgroundColor: "#1B4F8A", boxShadow: "0 24px 64px rgba(27,79,138,0.35), 0 8px 24px rgba(0,0,0,0.2)", isolation: "isolate" };
-  const indexCls = isGlass ? "text-[#1B4F8A]" : "text-[#F5A623]";
-  const roleCls = isGlass ? "text-[#1B4F8A] bg-[#1B4F8A]/15" : "text-[#F5A623] bg-[#F5A623]/25";
-  const titleCls = isGlass ? "text-[#1B4F8A]" : "text-white";
+    ? { y, x, rotate, zIndex: index + 1, background: "rgba(255,255,255,0.85)", backdropFilter: "blur(16px) saturate(120%)", WebkitBackdropFilter: "blur(16px) saturate(120%)", border: "1px solid rgba(255,255,255,0.7)", boxShadow: "0 20px 56px rgba(0,58,77,0.22), 0 4px 12px rgba(0,0,0,0.08)", isolation: "isolate" }
+    : { y, x, rotate, zIndex: index + 1, backgroundColor: "#003A4D", boxShadow: "0 24px 64px rgba(0,58,77,0.35), 0 8px 24px rgba(0,0,0,0.2)", isolation: "isolate" };
+  const indexCls = isGlass ? "text-[#003A4D]" : "text-[#F0C924]";
+  const roleCls = isGlass ? "text-[#003A4D] bg-[#003A4D]/15" : "text-[#F0C924] bg-[#F0C924]/25";
+  const titleCls = isGlass ? "text-[#003A4D]" : "text-white";
   const descCls = isGlass ? "text-[#1A1A1A]" : "text-white";
-  const statBoxCls = isGlass ? "bg-[#1B4F8A]/10" : "bg-white/15";
+  const statBoxCls = isGlass ? "bg-[#003A4D]/10" : "bg-white/15";
   const statLabelCls = isGlass ? "text-[#1A1A1A]" : "text-white";
-  const watermarkCls = isGlass ? "text-[#1B4F8A]/10" : "text-white/[0.04]";
-  const dotColor = isGlass ? "#1B4F8A" : "#fff";
+  const watermarkCls = isGlass ? "text-[#003A4D]/10" : "text-white/[0.04]";
+  const dotColor = isGlass ? "#003A4D" : "#fff";
   return (
     <motion.div
       style={cardStyle}
@@ -103,11 +97,11 @@ function ProductCard({ p, index, progress, pos, layout, reducedMotion }) {
         </div>
         <h3 className={`premium-font-galdgderbold text-[1.4rem] sm:text-[1.8rem] lg:text-[2rem] leading-tight mb-2 ${titleCls}`}>{p.name}</h3>
         <p className={`text-[12px] leading-relaxed mb-5 ${descCls}`} style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{p.desc}</p>
-        <div className="w-8 h-[2px] bg-[#F5A623] mb-4" />
+        <div className="w-8 h-[2px] bg-[#F0C924] mb-4" />
         <div className="flex gap-2 mt-auto">
           {p.stats.map(stat => (
             <div key={stat.label} className={`flex-1 p-2.5 ${statBoxCls}`}>
-              <div className="text-sm font-bold text-[#F5A623] leading-none mb-1">{stat.value}</div>
+              <div className="text-sm font-bold text-[#F0C924] leading-none mb-1">{stat.value}</div>
               <div className={`text-[8px] uppercase tracking-wider leading-tight ${statLabelCls}`}>{stat.label}</div>
             </div>
           ))}
@@ -138,7 +132,7 @@ function ProductsSection() {
     <section ref={containerRef} className="relative" style={{ height: stackLayout === "mobile" ? "500vh" : "560vh" }}>
       <div className="sticky top-0 h-[100dvh] min-h-[640px] overflow-hidden flex flex-col sm:min-h-[680px] sm:flex-row items-stretch" style={{ backgroundColor: "#F2F0EC" }}>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 opacity-20">
-          <div className="w-full h-full" style={{ background: "radial-gradient(ellipse at center, rgba(27,79,138,0.15) 0%, transparent 70%)" }} />
+          <div className="w-full h-full" style={{ background: "radial-gradient(ellipse at center, rgba(0,58,77,0.15) 0%, transparent 70%)" }} />
         </div>
         <motion.div style={{ opacity: headingOpacity }} className="sm:hidden relative z-10 py-3 flex items-center justify-center shrink-0 pointer-events-none">
           <h2 className="premium-font-galdgderbold text-[11px] text-[#1A1A1A]/45 uppercase tracking-[0.25em]">Products We Offer</h2>
@@ -159,61 +153,6 @@ function ProductsSection() {
   );
 }
 
-function OverviewSection() {
-  const [activeTab, setActiveTab] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
-  const revealTransition = prefersReducedMotion ? { duration: 0 } : { duration: 0.55, ease: [0.22, 1, 0.36, 1] };
-  return (
-    <section style={{ backgroundColor: "#F2F0EC" }} className="py-16 sm:py-24 lg:py-32">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="grid gap-8 md:gap-10 lg:gap-12 grid-cols-1 md:grid-cols-2 items-center">
-          <motion.div className="flex justify-center items-center order-2 md:order-1" initial={prefersReducedMotion ? false : { opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={revealTransition}>
-            <div className="w-full max-w-[400px] aspect-square bg-[#1B4F8A] flex flex-col items-center justify-center gap-4 p-8">
-              <div className="grid grid-cols-2 gap-4 w-full">
-                {["Vinyl Printing", "Sublimation", "Trophies", "Signage"].map((item) => (
-                  <div key={item} className="bg-white/10 p-4 text-center">
-                    <span className="text-white text-xs font-semibold">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="text-center mt-2">
-                <div className="text-3xl font-black text-[#F5A623]">100+</div>
-                <div className="text-white/60 text-xs uppercase tracking-wider mt-1">Products Available</div>
-              </div>
-            </div>
-          </motion.div>
-          <motion.div className="order-1 md:order-2" initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ ...revealTransition, delay: 0.08 }}>
-            <h3 className="premium-font-galdgderbold text-3xl text-[#1B4F8A] sm:text-4xl md:text-5xl lg:text-6xl leading-[1]">
-              Your Complete <span className="text-[#F5A623]">Printing</span> Partner
-            </h3>
-            <p className="mt-4 sm:mt-5 text-sm leading-[1.9] text-[#1A1A1A]/55">
-              We offer a full range of printing and awards products for retail customers, businesses, event organizers, and wholesale buyers — all under one roof.
-            </p>
-            <div className="mt-6 sm:mt-8 flex">
-              {TABS.map((t, i) => (
-                <button key={t.tab} type="button" onClick={() => setActiveTab(i)} className={`flex-1 min-h-11 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 motion-reduce:transition-none ${activeTab === i ? "bg-[#1B4F8A] text-white" : "bg-[#1B4F8A]/10 text-[#1B4F8A]/60 hover:text-[#1B4F8A]"}`} style={{ borderRadius: 0 }}>
-                  {t.tab}
-                </button>
-              ))}
-            </div>
-            <div className="bg-[#1B4F8A]/5 border border-[#1B4F8A]/10 border-t-0 overflow-hidden">
-              <div className="p-5 sm:p-8">
-                <h4 className="font-bold text-[#1B4F8A] text-base sm:text-lg leading-tight">{TABS[activeTab].cardTitle}</h4>
-                <p className="mt-2.5 text-xs leading-relaxed text-[#1A1A1A]/50">{TABS[activeTab].desc}</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default function Section4() {
-  return (
-    <>
-      <OverviewSection />
-      <ProductsSection />
-    </>
-  );
+  return <ProductsSection />;
 }

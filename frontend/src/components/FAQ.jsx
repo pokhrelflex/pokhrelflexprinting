@@ -18,9 +18,9 @@ export default function FAQ() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#F2F0EC" }}>
       <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-24 pb-16">
-        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#1B4F8A]/60">Support</span>
+        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#003A4D]/60">Support</span>
         <h1 className="mt-4 premium-font-galdgderbold text-3xl sm:text-4xl lg:text-5xl text-[#1A1A1A] leading-tight">
-          Frequently Asked <span className="text-[#1B4F8A]">Questions</span>
+          Frequently Asked <span className="text-[#003A4D]">Questions</span>
         </h1>
         <p className="mt-4 text-sm leading-relaxed text-[#1A1A1A]/55 max-w-lg">
           Everything you need to know about our printing services. Can't find the answer? Contact us directly.
@@ -28,19 +28,19 @@ export default function FAQ() {
 
         <div className="mt-10 space-y-3">
           {FAQS.map((faq, i) => (
-            <div key={i} className="border border-[#1B4F8A]/10 bg-white overflow-hidden">
+            <div key={i} className="border border-[#003A4D]/10 bg-white overflow-hidden">
               <button
                 type="button"
                 onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between px-5 py-4 text-left text-sm font-semibold text-[#1A1A1A] hover:bg-[#1B4F8A]/5 transition-colors min-h-[44px]"
+                className="w-full flex items-center justify-between px-5 py-4 text-left text-sm font-semibold text-[#1A1A1A] hover:bg-[#003A4D]/5 transition-colors min-h-[44px]"
               >
                 <span>{faq.q}</span>
-                <svg className={`h-4 w-4 shrink-0 ml-4 transition-transform duration-200 text-[#F5A623] ${open === i ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className={`h-4 w-4 shrink-0 ml-4 transition-transform duration-200 text-[#F0C924] ${open === i ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               {open === i && (
-                <div className="px-5 pb-4 text-sm leading-relaxed text-[#1A1A1A]/60 border-t border-[#1B4F8A]/8">
+                <div className="px-5 pb-4 text-sm leading-relaxed text-[#1A1A1A]/60 border-t border-[#003A4D]/8">
                   <p className="pt-3">{faq.a}</p>
                 </div>
               )}
@@ -48,10 +48,10 @@ export default function FAQ() {
           ))}
         </div>
 
-        <div className="mt-12 p-6 bg-[#1B4F8A] text-white">
+        <div className="mt-12 p-6 bg-[#003A4D] text-white">
           <h3 className="font-bold text-lg">Still have questions?</h3>
           <p className="mt-1 text-sm text-white/70">Our team is happy to help you with any enquiry.</p>
-          <a href="/contact" className="mt-4 inline-flex items-center gap-2 bg-[#F5A623] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#F5A623]/85 transition-colors">
+          <a href="/contact" className="mt-4 inline-flex items-center gap-2 bg-[#F0C924] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#F0C924]/85 transition-colors">
             Contact Us
           </a>
         </div>

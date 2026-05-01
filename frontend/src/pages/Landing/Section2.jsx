@@ -38,7 +38,7 @@ function StatItem({ value, suffix, label }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className={`premium-font-galdgderbold text-3xl sm:text-4xl transition-all duration-300 ${hovered ? "text-[#F5A623] scale-110" : "text-white"}`}>
+      <div className={`premium-font-galdgderbold text-3xl sm:text-4xl transition-all duration-300 ${hovered ? "text-[#F0C924] scale-110" : "text-white"}`}>
         {display}
       </div>
       <div className="mt-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
@@ -51,7 +51,7 @@ function StatItem({ value, suffix, label }) {
 function StatsStrip() {
   const [stripRef, stripVisible] = useScrollReveal(0.3);
   return (
-    <div ref={stripRef} className={`bg-[#1B4F8A] transition-all duration-1000 ${stripVisible ? "opacity-100" : "opacity-0"}`}>
+    <div ref={stripRef} className={`bg-[#003A4D] transition-all duration-1000 ${stripVisible ? "opacity-100" : "opacity-0"}`}>
       <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         {STATS.map((s, i) => (
           <StatItem key={s.label} value={s.value} suffix={s.suffix} label={s.label} delay={i * 200} />
@@ -68,12 +68,12 @@ export default function Section2() {
       <div className="pt-16 sm:pt-24 lg:pt-32 pb-10 sm:pb-16 px-4 sm:px-6">
         <div className="mx-auto max-w-5xl">
           <div className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#1B4F8A]/60">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#003A4D]/60">
               About Us
             </span>
             <h2 className="mt-4 premium-font-galdgderbold text-[2.5rem] text-[#1A1A1A] sm:text-5xl lg:text-7xl xl:text-8xl leading-[0.95]">
               Who We{" "}
-              <span className="text-[#1B4F8A]">Are</span>
+              <span className="text-[#003A4D]">Are</span>
             </h2>
           </div>
 

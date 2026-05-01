@@ -56,10 +56,10 @@ export default function Section5() {
     <section ref={ref} className="relative overflow-hidden py-16 sm:py-24 lg:py-28" style={{ backgroundColor: "#F2F0EC" }}>
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className={`text-center transition-all duration-700 motion-reduce:transition-none ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <span className="inline-flex bg-[#1B4F8A]/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1B4F8A]">
+          <span className="inline-flex bg-[#003A4D]/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#003A4D]">
             Full Range
           </span>
-          <h2 className="mt-4 sm:mt-5 premium-font-galdgderbold text-2xl sm:text-4xl lg:text-5xl text-[#1B4F8A] leading-tight">
+          <h2 className="mt-4 sm:mt-5 premium-font-galdgderbold text-2xl sm:text-4xl lg:text-5xl text-[#003A4D] leading-tight">
             Our Product Categories
           </h2>
           <p className="mx-auto mt-3 sm:mt-4 max-w-2xl text-xs sm:text-base leading-relaxed text-[#1A1A1A]/65">
@@ -74,11 +74,11 @@ export default function Section5() {
               key={cat.name}
               type="button"
               onClick={() => setSelectedCat(i)}
-              className={`group relative min-h-[44px] overflow-hidden border p-5 text-left transition-all duration-500 ease-out touch-manipulation motion-reduce:transition-none sm:p-6 ${selectedCat === i ? "border-[#1B4F8A]/35 bg-white shadow-[0_16px_40px_rgba(27,79,138,0.12)] sm:-translate-y-1" : "border-[#1A1A1A]/10 bg-white/90 hover:border-[#1A1A1A]/20 hover:shadow-[0_10px_28px_rgba(45,45,45,0.10)] sm:hover:-translate-y-0.5"} ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+              className={`group relative min-h-[44px] overflow-hidden border p-5 text-left transition-all duration-500 ease-out touch-manipulation motion-reduce:transition-none sm:p-6 ${selectedCat === i ? "border-[#003A4D]/35 bg-white shadow-[0_16px_40px_rgba(0,58,77,0.12)] sm:-translate-y-1" : "border-[#1A1A1A]/10 bg-white/90 hover:border-[#1A1A1A]/20 hover:shadow-[0_10px_28px_rgba(45,45,45,0.10)] sm:hover:-translate-y-0.5"} ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
               style={{ transitionDelay: visible ? `${220 + i * 90}ms` : "0ms" }}
             >
-              {selectedCat === i && <div className="absolute -top-px left-0 right-0 h-1 bg-[#F5A623]" />}
-              <div className={`inline-flex p-3 transition-all duration-300 ${selectedCat === i ? "bg-[#F5A623] text-white shadow-lg" : "bg-[#1B4F8A] text-white/85"}`}>
+              {selectedCat === i && <div className="absolute -top-px left-0 right-0 h-1 bg-[#F0C924]" />}
+              <div className={`inline-flex p-3 transition-all duration-300 ${selectedCat === i ? "bg-[#F0C924] text-white shadow-lg" : "bg-[#003A4D] text-white/85"}`}>
                 {cat.icon}
               </div>
               <h3 className="mt-4 text-lg font-bold tracking-tight text-[#1A1A1A]">{cat.name}</h3>
@@ -93,12 +93,12 @@ export default function Section5() {
                 </div>
                 <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm">
                   <span className="text-[#1A1A1A]/50">Pricing</span>
-                  <span className="font-semibold text-[#F5A623]">{cat.pricing}</span>
+                  <span className="font-semibold text-[#F0C924]">{cat.pricing}</span>
                 </div>
               </div>
               {selectedCat === i && (
-                <div className="mt-4 flex items-center gap-2 text-xs font-semibold tracking-wide text-[#F5A623]">
-                  <span className="h-1.5 w-1.5 bg-[#F5A623]" />
+                <div className="mt-4 flex items-center gap-2 text-xs font-semibold tracking-wide text-[#F0C924]">
+                  <span className="h-1.5 w-1.5 bg-[#F0C924]" />
                   Selected category
                 </div>
               )}
@@ -112,8 +112,8 @@ export default function Section5() {
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             {PROCESS_STEPS.map((step, i) => (
               <React.Fragment key={step}>
-                <div className="group flex min-h-11 cursor-default items-center gap-2 border border-[#1B4F8A]/12 bg-[#1B4F8A]/5 px-3 py-2.5 transition-all duration-300 motion-reduce:transition-none hover:border-[#1B4F8A]/25 hover:bg-[#1B4F8A] hover:text-white hover:shadow-md sm:px-4">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center bg-[#1B4F8A]/10 text-[10px] font-bold text-[#1B4F8A] transition-colors duration-300 group-hover:bg-white/20 group-hover:text-white">
+                <div className="group flex min-h-11 cursor-default items-center gap-2 border border-[#003A4D]/12 bg-[#003A4D]/5 px-3 py-2.5 transition-all duration-300 motion-reduce:transition-none hover:border-[#003A4D]/25 hover:bg-[#003A4D] hover:text-white hover:shadow-md sm:px-4">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center bg-[#003A4D]/10 text-[10px] font-bold text-[#003A4D] transition-colors duration-300 group-hover:bg-white/20 group-hover:text-white">
                     {i + 1}
                   </span>
                   <span className="text-sm font-medium text-[#1A1A1A] transition-colors duration-300 group-hover:text-white">{step}</span>

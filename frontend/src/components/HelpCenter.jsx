@@ -11,9 +11,9 @@ const TOPICS = [
 
 export default function HelpCenter() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#0D1F3C" }}>
+    <div className="min-h-screen" style={{ backgroundColor: "#003A4D" }}>
       <div className="mx-auto max-w-5xl px-4 sm:px-6 pt-24 pb-16">
-        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#F5A623]/80">Help Center</span>
+        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#F0C924]/80">Help Center</span>
         <h1 className="mt-4 premium-font-galdgderbold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
           How Can We Help?
         </h1>
@@ -26,11 +26,11 @@ export default function HelpCenter() {
             <a
               key={topic.title}
               href={topic.link}
-              className="group border border-white/10 bg-white/5 p-5 hover:border-[#F5A623]/40 hover:bg-white/10 transition-all duration-300"
+              className="group border border-white/10 bg-white/5 p-5 hover:border-[#F0C924]/40 hover:bg-white/10 transition-all duration-300"
             >
-              <h3 className="font-bold text-white group-hover:text-[#F5A623] transition-colors text-sm">{topic.title}</h3>
+              <h3 className="font-bold text-white group-hover:text-[#F0C924] transition-colors text-sm">{topic.title}</h3>
               <p className="mt-2 text-xs text-white/50 leading-relaxed">{topic.desc}</p>
-              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#F5A623]">
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#F0C924]">
                 Learn more
                 <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 
 function isSectionDark(elements) {
   if (!elements || elements.length === 0) return true;
-  const darkKeywords = ["#0D1F3C", "#1B4F8A", "#0f2340", "#163e6e", "pfp-main", "pfp-dark"];
+  const darkKeywords = ["#003A4D", "#002C3B", "#001E2C", "#00131C", "pfp-main", "pfp-dark"];
   const lightKeywords = ["#F2F0EC", "#ffffff", "bg-white", "bg-pfp-paper"];
   for (const el of elements) {
     const inlineStyle = (el.style?.backgroundColor || el.style?.background || "").trim();
@@ -25,7 +25,8 @@ function isSectionDark(elements) {
 const NAV_LINKS = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
-  { label: "Portfolio", to: "/portfolio" },
+  { label: "Products", to: "/products" },
+  { label: "Notices", to: "/notices" },
 ];
 
 export default function Header({ visible = true }) {
@@ -36,7 +37,7 @@ export default function Header({ visible = true }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const headerRef = useRef(null);
 
-  const DARK_HERO = ["/", "/about", "/portfolio", "/faq", "/support", "/help-center"];
+  const DARK_HERO = ["/", "/about", "/products", "/notices", "/faq", "/support", "/help-center"];
 
   const detectBackground = useCallback(() => {
     if (isContact) { setDark(false); return; }
@@ -63,15 +64,26 @@ export default function Header({ visible = true }) {
 
   useEffect(() => { setMenuOpen(false); }, [location.pathname]);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    window.__lenis?.stop();
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.__lenis?.start();
+      document.body.style.overflow = prev;
+    };
+  }, [menuOpen]);
+
   const textColor   = dark ? "text-white/80"   : "text-[#1A1A1A]/70";
   const hoverColor  = dark ? "hover:text-white" : "hover:text-[#1A1A1A]";
-  const borderColor = dark ? "rgba(255,255,255,0.15)" : "rgba(27,79,138,0.12)";
-  const bgColor     = dark ? "rgba(255,255,255,0.08)" : "rgba(27,79,138,0.06)";
+  const borderColor = dark ? "rgba(255,255,255,0.15)" : "rgba(0,58,77,0.12)";
+  const bgColor     = "transparent";
 
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-50 transition-all duration-700 ease-out px-4 py-3"
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out px-4 py-3"
       style={{
         backgroundColor: "transparent",
         transform: visible ? "translateY(0)" : "translateY(-120%)",
@@ -95,7 +107,7 @@ export default function Header({ visible = true }) {
             <div
               className="h-7 w-7 sm:h-8 sm:w-8 flex items-center justify-center font-black text-sm"
               style={{
-                background: dark ? "rgba(245,166,35,0.9)" : "#F5A623",
+                background: dark ? "rgba(240,201,36,0.9)" : "#F0C924",
                 color: "#fff",
                 borderRadius: "6px",
               }}
@@ -103,7 +115,7 @@ export default function Header({ visible = true }) {
               PF
             </div>
             <span
-              className={`hidden sm:block text-sm font-bold tracking-tight transition-colors duration-500 ${dark ? "text-white" : "text-[#1B4F8A]"}`}
+              className={`hidden sm:block text-sm font-bold tracking-tight transition-colors duration-500 ${dark ? "text-white" : "text-[#003A4D]"}`}
             >
               Pokhrel Flex
             </span>
@@ -118,7 +130,7 @@ export default function Header({ visible = true }) {
                 key={label}
                 to={to}
                 end={to === "/"}
-                className={({ isActive }) => `transition-colors duration-300 ${isActive ? "text-[#F5A623]" : hoverColor}`}
+                className={({ isActive }) => `transition-colors duration-300 ${isActive ? "text-[#F0C924]" : hoverColor}`}
               >
                 {label}
               </NavLink>
@@ -130,9 +142,9 @@ export default function Header({ visible = true }) {
         <div className="flex items-center gap-2 shrink-0">
           <Link
             to="/contact"
-            className="hidden sm:flex rounded-full bg-[#F5A623] px-5 py-2 text-sm font-semibold text-white transition-colors duration-300 items-center gap-2 hover:bg-[#F5A623]/85"
+            className="hidden sm:flex rounded-full bg-[#F0C924] px-5 py-2 text-sm font-bold text-[#003A4D] transition-colors duration-300 items-center gap-2 hover:bg-[#F0C924]/85"
           >
-            Get a Quote
+            Contact
           </Link>
 
           {/* Hamburger */}
@@ -140,7 +152,7 @@ export default function Header({ visible = true }) {
             type="button"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             onClick={() => setMenuOpen(o => !o)}
-            className={`md:hidden flex flex-col justify-center items-center w-9 h-9 rounded-full transition-colors ${dark ? "hover:bg-white/10" : "hover:bg-[#1B4F8A]/10"}`}
+            className={`md:hidden flex flex-col justify-center items-center w-9 h-9 rounded-full transition-colors ${dark ? "hover:bg-white/10" : "hover:bg-[#003A4D]/10"}`}
           >
             <span className={`block w-5 h-0.5 rounded transition-all duration-300 ${dark ? "bg-white" : "bg-[#1A1A1A]"} ${menuOpen ? "rotate-45 translate-y-[3px]" : ""}`} />
             <span className={`block w-5 h-0.5 rounded mt-1 transition-all duration-300 ${dark ? "bg-white" : "bg-[#1A1A1A]"} ${menuOpen ? "opacity-0" : ""}`} />
@@ -149,47 +161,55 @@ export default function Header({ visible = true }) {
         </div>
       </div>
 
-      {/* ── Mobile dropdown menu ── */}
-      <div
-        className={`md:hidden mx-auto max-w-6xl mt-2 overflow-hidden transition-all duration-300 ease-out ${menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
+      {/* ── Mobile slide-in drawer (right, full width × full height) ── */}
+      <aside
+        className="md:hidden fixed top-0 right-0 z-40 h-[100vh] w-screen"
+        style={{
+          background: "#003A4D",
+          transform: menuOpen ? "translateX(0)" : "translateX(101%)",
+          transition: menuOpen
+            ? "transform 700ms cubic-bezier(0.22, 1, 0.36, 1)"
+            : "transform 420ms cubic-bezier(0.64, 0, 0.78, 0)",
+          willChange: "transform",
+        }}
+        aria-hidden={!menuOpen}
       >
-        <div
-          className="rounded-2xl px-4 py-3"
-          style={{
-            background: dark ? "rgba(13,31,60,0.92)" : "rgba(255,255,255,0.95)",
-            backdropFilter: "blur(40px) saturate(120%)",
-            WebkitBackdropFilter: "blur(40px) saturate(120%)",
-            border: `1px solid ${borderColor}`,
-            boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
-          }}
-        >
-          <nav className="flex flex-col">
+        <div className="relative flex h-full flex-col px-8 pt-24 pb-10">
+          <button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            aria-label="Close menu"
+            className="absolute top-6 right-6 flex h-11 w-11 items-center justify-center rounded-full text-white/80 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+          >
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.25}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <nav className="flex-1 flex flex-col">
             {NAV_LINKS.map(({ label, to }, i) => (
               <NavLink
                 key={label}
                 to={to}
                 end={to === "/"}
                 onClick={() => setMenuOpen(false)}
-                className={({ isActive }) => `px-4 py-3 text-sm font-medium rounded-xl transition-colors duration-200
-                  ${isActive ? "text-[#F5A623]" : dark ? "text-white/80 hover:text-white hover:bg-white/10" : "text-[#1A1A1A]/70 hover:text-[#1A1A1A] hover:bg-[#1B4F8A]/6"}
-                  ${i < NAV_LINKS.length - 1 ? (dark ? "border-b border-white/5" : "border-b border-[#1B4F8A]/5") : ""}
+                className={({ isActive }) => `block px-1 py-4 text-2xl premium-font-galdgderbold transition-colors duration-200
+                  ${isActive ? "text-[#F0C924]" : "text-white/85 hover:text-white"}
+                  ${i < NAV_LINKS.length - 1 ? "border-b border-white/10" : ""}
                 `}
               >
                 {label}
               </NavLink>
             ))}
-            <div className="pt-3 pb-1 px-1">
-              <Link
-                to="/contact"
-                onClick={() => setMenuOpen(false)}
-                className="block w-full text-center rounded-full bg-[#F5A623] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#F5A623]/85"
-              >
-                Get a Quote
-              </Link>
-            </div>
           </nav>
+          <Link
+            to="/contact"
+            onClick={() => setMenuOpen(false)}
+            className="mt-6 block w-full text-center rounded-full bg-[#F0C924] px-5 py-3.5 text-base font-bold text-[#003A4D] transition-colors hover:bg-[#F0C924]/85"
+          >
+            Contact
+          </Link>
         </div>
-      </div>
+      </aside>
     </header>
   );
 }
