@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { searchCountries, getPopularCountries } from '../countries';
 
-const flagUrl = (code) => `https://flagcdn.com/w40/${code.toLowerCase()}.png`;
-const flagUrl2x = (code) => `https://flagcdn.com/w80/${code.toLowerCase()}.png`;
+const Flag = ({ code, className = '' }) => (
+  <span className={`fi fi-${code.toLowerCase()} ${className}`} aria-hidden="true" />
+);
 
 export default function CountrySelector({ value, onChange, placeholder = 'Country', required }) {
   const [open, setOpen] = useState(false);
@@ -49,9 +50,7 @@ export default function CountrySelector({ value, onChange, placeholder = 'Countr
         onClick={handleOpen}
       >
         {value && !open && (
-          <span className="w-5 h-4 overflow-hidden flex-shrink-0 inline-flex items-center">
-            <img src={flagUrl(value.code)} srcSet={`${flagUrl2x(value.code)} 2x`} alt="" className="w-full h-full object-contain" />
-          </span>
+          <Flag code={value.code} className="w-5 h-4 flex-shrink-0 !bg-contain bg-no-repeat bg-center" />
         )}
         <input
           ref={inputRef}
@@ -111,9 +110,7 @@ function CountryOption({ country, selected, onSelect }) {
       onClick={() => onSelect(country)}
       className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left transition-colors hover:bg-[#003A4D]/5 ${selected ? 'bg-[#003A4D]/8 text-[#003A4D]' : 'text-[#1A1A1A]'}`}
     >
-      <span className="w-5 h-4 overflow-hidden flex-shrink-0 inline-flex items-center">
-        <img src={flagUrl(country.code)} srcSet={`${flagUrl2x(country.code)} 2x`} alt="" className="w-full h-full object-contain" />
-      </span>
+      <Flag code={country.code} className="w-5 h-4 flex-shrink-0 !bg-contain bg-no-repeat bg-center" />
       <span className="flex-1 truncate">{country.name}</span>
       <span className="text-xs text-[#1A1A1A]/40 flex-shrink-0">{country.countryCode}</span>
     </button>

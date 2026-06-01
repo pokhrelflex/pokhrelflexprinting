@@ -11,8 +11,6 @@ const STEPS = [
   { num: "04", title: "Pick up or delivery", desc: "Collect from our shop or we deliver to your location." },
 ];
 
-const flagUrl   = (code) => `https://flagcdn.com/w40/${code.toLowerCase()}.png`;
-const flagUrl2x = (code) => `https://flagcdn.com/w80/${code.toLowerCase()}.png`;
 
 export default function Contact() {
   const [form, setForm]                       = useState({ name: "", email: "", message: "" });
@@ -91,20 +89,23 @@ export default function Contact() {
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-wider text-[#1A1A1A]">Phone</h4>
                   <div className="mt-2 space-y-2 text-sm text-[#1A1A1A]/60 leading-relaxed">
-                    <p>+977 [phone placeholder]</p>
-                    <p>+977 [phone placeholder]</p>
+                    <p><a href="tel:+9779856031360" className="transition hover:text-[#003A4D]">+977 9856031360</a></p>
+                    <p><a href="tel:+9779846306222" className="transition hover:text-[#003A4D]">+977 9846306222</a></p>
+                    <p><a href="tel:+9779849956242" className="transition hover:text-[#003A4D]">+977 9849956242</a></p>
                   </div>
                 </div>
 
                 <div className="space-y-6 sm:space-y-8">
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[#1A1A1A]">Email</h4>
-                    <p className="mt-2 text-sm text-[#1A1A1A]/60 break-all">[email placeholder]</p>
+                    <p className="mt-2 text-sm text-[#1A1A1A]/60 break-all">
+                      <a href="mailto:pokhrelflexprinting@gmail.com" className="transition hover:text-[#003A4D]">pokhrelflexprinting@gmail.com</a>
+                    </p>
                   </div>
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[#1A1A1A]">Location</h4>
                     <p className="mt-2 text-sm text-[#1A1A1A]/60 leading-relaxed">
-                      [Address placeholder],<br />Nepal
+                      Sabhagriha Path-08, Pokhara,<br />Gandaki Province, Nepal
                     </p>
                   </div>
                   <div>
@@ -180,11 +181,9 @@ export default function Contact() {
                   <div className="flex border border-[#1A1A1A]/8 bg-white/60 backdrop-blur-sm focus-within:border-[#003A4D] focus-within:bg-white/80 transition-colors">
                     <div className="flex items-center gap-1.5 pl-3 pr-2 border-r border-[#1A1A1A]/8 flex-shrink-0">
                       {prefixFlag && (
-                        <img
-                          src={flagUrl(prefixFlag.code)}
-                          srcSet={`${flagUrl2x(prefixFlag.code)} 2x`}
-                          alt=""
-                          className="w-5 h-4 object-contain flex-shrink-0"
+                        <span
+                          className={`fi fi-${prefixFlag.code.toLowerCase()} w-5 h-4 flex-shrink-0 !bg-contain bg-no-repeat bg-center`}
+                          aria-hidden="true"
                         />
                       )}
                       <input

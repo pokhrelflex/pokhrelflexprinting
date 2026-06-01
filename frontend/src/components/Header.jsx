@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { IntroContext } from "../context/introContext";
 
 function isSectionDark(elements) {
   if (!elements || elements.length === 0) return true;
@@ -24,15 +25,17 @@ function isSectionDark(elements) {
 }
 
 const NAV_LINKS = [
-  { key: "home",     to: "/" },
-  { key: "about",    to: "/about" },
-  { key: "products", to: "/products" },
-  { key: "notices",  to: "/notices" },
+  { key: "home",      to: "/" },
+  { key: "about",     to: "/about" },
+  { key: "products",  to: "/products" },
+  { key: "portfolio", to: "/portfolio" },
+  { key: "notices",   to: "/notices" },
 ];
 
 export default function Header({ visible = true }) {
   const location = useLocation();
   const { t, i18n } = useTranslation();
+  const { logoReady } = useContext(IntroContext);
   const isLanding = location.pathname === "/";
   const isContact = location.pathname === "/contact";
   const [dark, setDark] = useState(true);
@@ -45,7 +48,7 @@ export default function Header({ visible = true }) {
   };
   const langLabel = i18n.language === "en" ? "NP" : "EN";
 
-  const DARK_HERO = ["/", "/about", "/products", "/notices", "/faq", "/support", "/help-center"];
+  const DARK_HERO = ["/", "/about", "/products", "/portfolio", "/notices", "/faq", "/support", "/help-center"];
 
   const detectBackground = useCallback(() => {
     if (isContact) { setDark(false); return; }
@@ -117,10 +120,12 @@ export default function Header({ visible = true }) {
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <div className="flex items-center gap-2">
             <svg
+              data-brand-logo
               viewBox="0 0 3019 1927"
               xmlns="http://www.w3.org/2000/svg"
               aria-label="Pokhrel Flex Printing"
               className={`h-5 sm:h-6 w-auto transition-colors duration-500 ${dark ? "text-white" : "text-[#003A4D]"}`}
+              style={{ visibility: logoReady ? "visible" : "hidden" }}
               fill="currentColor"
             >
               <path d="M1182.47 0C1200.04 19.54 1217.53 39.15 1235.18 58.61C1323.89 156.38 1412.62 254.15 1501.51 351.76C1505.67 356.33 1506.78 360.9 1506.78 366.68C1506.68 492.06 1506.71 617.45 1506.71 742.83C1506.71 972.56 1506.71 1202.29 1506.71 1432.03C1506.71 1435.63 1506.83 1439.24 1506.57 1442.82C1505.87 1452.74 1499.6 1459.2 1489.81 1460.19C1487.34 1460.44 1484.83 1460.4 1482.35 1460.4C1200.31 1460.4 918.26 1460.41 636.22 1460.4C619.23 1460.4 614.32 1455.66 614.31 1438.85C614.27 1330.63 614.29 1222.4 614.3 1114.18C614.3 1111.97 614.33 1109.74 614.62 1107.55C615.83 1098.22 621.23 1093.2 630.51 1092.77C633.55 1092.63 636.6 1092.71 639.64 1092.71C802.11 1092.71 964.59 1092.71 1127.06 1092.71H1137.5C1139.37 1086.04 1140.11 374 1138.47 359.22C1138.27 359.04 1138.07 358.85 1137.86 358.68C1137.65 358.5 1137.44 358.31 1137.2 358.19C1136.96 358.07 1136.67 358.02 1136.4 357.98C1135.86 357.89 1135.31 357.82 1134.76 357.75C1134.49 357.72 1134.21 357.71 1133.93 357.71C1133.38 357.7 1132.82 357.69 1132.27 357.68C1131.72 357.68 1131.16 357.68 1130.61 357.68C815.35 357.68 500.09 357.67 184.83 357.66C184.28 357.66 183.72 357.63 183.17 357.61C182.89 357.6 182.62 357.56 182.35 357.53C182.08 357.5 181.8 357.47 181.53 357.4C181.26 357.33 181.01 357.22 179.96 356.85C178.94 355.05 177.5 352.75 176.28 350.34C118.4 236.37 60.55 122.44 2.76 8.47C1.43 5.85 0.9 2.83 0 0C394.16 0 788.31 0 1182.47 0Z" />
