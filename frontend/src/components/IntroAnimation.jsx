@@ -56,16 +56,18 @@ export default function IntroAnimation({ onReveal }) {
       },
     });
 
-    // 1 — draw each path's outline, staggered.
-    tl.to(paths, { strokeDashoffset: 0, duration: 1.2, stagger: 0.18 });
+    // CYCLE 1 (full) — draw each outline fully and slowly, then fill it in.
+    tl.to(paths, { strokeDashoffset: 0, duration: 1.1, stagger: 0.16 });
+    tl.to(paths, { fillOpacity: 1, strokeOpacity: 0, duration: 0.6 }, "-=0.25");
 
-    // 2 — fill in while the outline fades away.
-    tl.to(paths, { fillOpacity: 1, strokeOpacity: 0, duration: 0.6 }, "-=0.35");
+    // CYCLE 2 (0.9) — loop back: undo the fill, redraw the outline to 90%,
+    // then carry on smoothly into the landing-page reveal.
+    tl.to(paths, { fillOpacity: 0, strokeOpacity: 1, duration: 0.4 });
+    tl.set(paths, { strokeDashoffset: 1 });
+    tl.to(paths, { strokeDashoffset: 0.1, duration: 0.95, stagger: 0.12 });
 
-    // 3 — brief hold on the finished logo.
-    tl.to({}, { duration: 0.5 });
-
-    // 4 — fly + scale into the real header logo slot, fade the backdrop.
+    // REVEAL — open the landing page: morph the logo into the
+    // header slot while the backdrop fades away.
     tl.add(() => {
       const target = document.querySelector("[data-brand-logo]");
       const logo = logoRef.current;
@@ -75,12 +77,12 @@ export default function IntroAnimation({ onReveal }) {
       const scale = t.width / l.width;
       const dx = t.left + t.width / 2 - (l.left + l.width / 2);
       const dy = t.top + t.height / 2 - (l.top + l.height / 2);
-      gsap.to(logo, { x: dx, y: dy, scale, duration: 0.95, ease: "power3.inOut" });
-      gsap.to(bgRef.current, { opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.2 });
+      gsap.to(logo, { x: dx, y: dy, scale, duration: 1.1, ease: "power3.inOut" });
+      gsap.to(bgRef.current, { opacity: 0, duration: 0.9, ease: "power2.out", delay: 0.15 });
     });
 
     // hold the timeline open for the morph tweens above to finish.
-    tl.to({}, { duration: 1.0 });
+    tl.to({}, { duration: 1.1 });
   }, []);
 
   if (done) return null;
@@ -93,7 +95,7 @@ export default function IntroAnimation({ onReveal }) {
         viewBox="0 0 3019 1927"
         xmlns="http://www.w3.org/2000/svg"
         aria-label="Pokhrel Flex Printing"
-        className="relative w-[62vw] max-w-[440px] h-auto"
+        className="relative w-[24vw] max-w-[160px] h-auto"
       >
         {PATHS.map((d, i) => (
           <path key={i} ref={(el) => (pathRefs.current[i] = el)} d={d} pathLength="1" />
