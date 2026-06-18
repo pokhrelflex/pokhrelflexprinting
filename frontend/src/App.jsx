@@ -16,6 +16,13 @@ import HelpCenter from './components/HelpCenter';
 import Support from './components/Support';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
+import AuthProvider from './components/admin/AuthProvider';
+import ProtectedRoute from './components/admin/ProtectedRoute';
+import AdminLogin from './pages/admin/Login';
+import AdminRegister from './pages/admin/Register';
+import ResetPassword from './pages/admin/ResetPassword';
+import AdminDashboard from './pages/admin/Dashboard';
+import UserDashboard from './pages/user/Dashboard';
 
 const basename =
   import.meta.env.BASE_URL && import.meta.env.BASE_URL !== '/'
@@ -26,12 +33,46 @@ function App() {
   useLenis();
   const [logoReady, setLogoReady] = useState(false);
 
+  // The intro animation only belongs on the public marketing site, not the
+  // admin panel / auth pages. It plays once per page load, so reading the path
+  // here is fine.
+  const path = window.location.pathname.replace(basename, '');
+  const isAdmin =
+    path.startsWith('/admin') ||
+    path.startsWith('/portal') ||
+    path.startsWith('/login') ||
+    path.startsWith('/register') ||
+    path.startsWith('/reset');
+
   return (
     <IntroContext.Provider value={{ logoReady }}>
+    <AuthProvider>
     <Router basename={basename}>
-      <IntroAnimation onReveal={() => setLogoReady(true)} />
+      {!isAdmin && <IntroAnimation onReveal={() => setLogoReady(true)} />}
       <ScrollToTop />
       <Routes>
+        {/* ── Admin panel (no public header/footer) ── */}
+        <Route path="/login" element={<AdminLogin />} />
+        <Route path="/register" element={<AdminRegister />} />
+        <Route path="/reset" element={<ResetPassword />} />
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute requireAdmin>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/portal/*"
+          element={
+            <ProtectedRoute>
+              <UserDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ── Public marketing site ── */}
         <Route
           path="/*"
           element={
@@ -55,6 +96,7 @@ function App() {
         />
       </Routes>
     </Router>
+    </AuthProvider>
     </IntroContext.Provider>
   );
 }

@@ -6,6 +6,9 @@ export default defineConfig({
   base: '/',
 
   root: './frontend',
+  // Load .env from the project root (one level above `root`), so the single
+  // root .env is the source of truth for all VITE_* vars.
+  envDir: __dirname,
   publicDir: './public',
 
   server: {

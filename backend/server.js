@@ -7,6 +7,8 @@ const config = require('./config/environment');
 const { errorHandler, notFoundHandler } = require('./middleware/validation');
 
 const formsRoutes = require('./routes/forms');
+const adminRoutes = require('./routes/admin');
+const authRoutes = require('./routes/auth');
 const sequelize = require('./config/postgres');
 
 const app = express();
@@ -74,6 +76,8 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/forms', formsRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.all('*', (req, res, next) => {
   if (req.path.startsWith('/api')) return next();
