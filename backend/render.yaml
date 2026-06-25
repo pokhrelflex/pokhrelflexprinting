@@ -5,8 +5,10 @@ services:
     region: singapore
     plan: free
     rootDir: backend
+    # The server imports the ESM React-Email .jsx templates at runtime, so it
+    # MUST run under tsx (npm start → "tsx server.js"), not plain node.
     buildCommand: npm install
-    startCommand: node server.js
+    startCommand: npm start
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
@@ -26,9 +28,10 @@ services:
         sync: false
       - key: JWT_EXPIRES_IN
         value: 7d
-      - key: EMAIL_USER
+      # Email is sent through Resend (see services/emailService.js).
+      - key: RESEND_API_KEY
         sync: false
-      - key: EMAIL_PASS
+      - key: EMAIL_FROM
         sync: false
       - key: EMAIL_TO
         sync: false

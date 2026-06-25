@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import axios from "axios";
+import { api } from "../api/client";
 import Footer from "../components/Footer";
 import CountrySelector from "../components/ui/CountrySelector";
 import { countries } from "../components/countries";
@@ -21,9 +21,6 @@ export default function Contact() {
   const [loading, setLoading]                 = useState(false);
   const [error, setError]                     = useState("");
 
-  const API_URL = import.meta.env.PROD
-    ? "/api/forms/contact"
-    : "http://localhost:5300/api/forms/contact";
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -47,7 +44,7 @@ export default function Contact() {
     setError("");
     try {
       const fullPhone = phoneNumber ? `${phonePrefix} ${phoneNumber}`.trim() : phonePrefix;
-      await axios.post(API_URL, {
+      await api.post("/api/forms/contact", {
         ...form,
         country: selectedCountry?.name ?? "",
         phone: fullPhone,

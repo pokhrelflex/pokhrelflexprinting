@@ -27,6 +27,20 @@ async function saveSubmission(formType, data) {
   }
 }
 
+// Run notification senders without letting one failed channel reject the
+// whole request. Logs each failure and reports whether the primary channel
+// (email) actually went out.
+async function notify(label, senders) {
+  const results = await Promise.allSettled(senders.map((s) => s.fn()));
+  results.forEach((r, i) => {
+    if (r.status === 'rejected') {
+      console.error(`⚠️ ${label} via ${senders[i].name} failed:`, r.reason?.message || r.reason);
+    }
+  });
+  // senders[0] is always the email channel.
+  return { emailSent: results[0]?.status === 'fulfilled' };
+}
+
 // Submit Contact form
 router.post('/contact', async (req, res, next) => {
   try {
@@ -39,12 +53,20 @@ router.post('/contact', async (req, res, next) => {
       });
     }
 
-    await Promise.all([
-      sendContactEmail({ name, email, phone, country, message }),
-      sendContactWhatsApp({ name, email, phone, country, message }),
+    // Persist first so a notification outage never loses the lead.
+    const token = await saveSubmission('contact', req.body);
+
+    const { emailSent } = await notify('Contact', [
+      { name: 'email', fn: () => sendContactEmail({ name, email, phone, country, message }) },
+      { name: 'whatsapp', fn: () => sendContactWhatsApp({ name, email, phone, country, message }) },
     ]);
 
-    const token = await saveSubmission('contact', req.body);
+    if (!token && !emailSent) {
+      return res.status(502).json({
+        success: false,
+        message: 'We could not deliver your message right now. Please email or call us directly.',
+      });
+    }
 
     res.json({
       success: true,
@@ -68,8 +90,17 @@ router.post('/newsletter', async (req, res, next) => {
       });
     }
 
-    await sendNewsletterEmail({ email });
     const token = await saveSubmission('newsletter', { email });
+    const { emailSent } = await notify('Newsletter', [
+      { name: 'email', fn: () => sendNewsletterEmail({ email }) },
+    ]);
+
+    if (!token && !emailSent) {
+      return res.status(502).json({
+        success: false,
+        message: 'Could not record your subscription right now. Please try again shortly.',
+      });
+    }
 
     res.json({
       success: true,
@@ -93,8 +124,17 @@ router.post('/inquiry', async (req, res, next) => {
       });
     }
 
-    await sendInquiryEmail({ name, email, product, quantity, message });
     const token = await saveSubmission('inquiry', req.body);
+    const { emailSent } = await notify('Inquiry', [
+      { name: 'email', fn: () => sendInquiryEmail({ name, email, product, quantity, message }) },
+    ]);
+
+    if (!token && !emailSent) {
+      return res.status(502).json({
+        success: false,
+        message: 'We could not submit your inquiry right now. Please try again shortly.',
+      });
+    }
 
     res.json({
       success: true,

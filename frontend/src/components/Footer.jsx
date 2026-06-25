@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
-
-const newsletterApiUrl = import.meta.env.PROD
-  ? "/api/forms/newsletter"
-  : "http://localhost:5300/api/forms/newsletter";
+import { api } from "../api/client";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -20,7 +16,7 @@ const Footer = () => {
     setSubscribeError("");
     setIsSubscribing(true);
     try {
-      await axios.post(newsletterApiUrl, { email });
+      await api.post("/api/forms/newsletter", { email });
       setEmail("");
       setSubscribeStatus(t("footer.thanks"));
     } catch (err) {

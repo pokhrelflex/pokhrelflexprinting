@@ -16,6 +16,9 @@
   ],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.9",
