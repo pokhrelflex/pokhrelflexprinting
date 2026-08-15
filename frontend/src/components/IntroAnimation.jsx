@@ -21,14 +21,25 @@ export default function IntroAnimation({ onReveal }) {
   const pathRefs = useRef([]);
 
   useLayoutEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+
+    const finishIntro = () => {
+      window.__lenis?.start();
+      document.body.style.overflow = prevOverflow;
+      onReveal?.();
+      setDone(true);
+    };
+
     // Run exactly once. The module-level guard also makes this a no-op on
     // StrictMode's dev double-invoke, so the timeline is never torn down
     // mid-flight. Scroll is restored in onComplete rather than in a cleanup.
-    if (introHasPlayed) { onReveal?.(); return; }
+    if (introHasPlayed) {
+      onReveal?.();
+      return;
+    }
     introHasPlayed = true;
 
     window.__lenis?.stop();
-    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.scrollTo(0, 0);
 
@@ -48,12 +59,7 @@ export default function IntroAnimation({ onReveal }) {
 
     const tl = gsap.timeline({
       defaults: { ease: "power2.inOut" },
-      onComplete: () => {
-        window.__lenis?.start();
-        document.body.style.overflow = prevOverflow;
-        onReveal?.();   // reveal the real header logo the instant the intro lands
-        setDone(true);  // …and remove the intro overlay in the same frame
-      },
+      onComplete: () => finishIntro(),
     });
 
     // CYCLE 1 (full) — draw each outline fully and slowly, then fill it in.
@@ -83,7 +89,13 @@ export default function IntroAnimation({ onReveal }) {
 
     // hold the timeline open for the morph tweens above to finish.
     tl.to({}, { duration: 1.1 });
-  }, []);
+
+    const fallbackTimer = window.setTimeout(() => {
+      if (!done) finishIntro();
+    }, 3500);
+
+    return () => window.clearTimeout(fallbackTimer);
+  }, [done]);
 
   if (done) return null;
 
