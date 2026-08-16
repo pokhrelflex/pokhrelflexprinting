@@ -3,22 +3,47 @@ import { createClient } from "@supabase/supabase-js";
 // Public (anon) Supabase client used only for admin authentication on the
 // frontend. The anon key is safe to expose; row-level security and the
 // backend service key protect the actual data.
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-export const supabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
 const NOT_CONFIGURED = {
   message:
     "Authentication is not configured on this deployment (missing VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY).",
 };
 
-// createClient() throws synchronously when the URL is blank. Because this module
-// is pulled in by AuthProvider — which wraps the whole app — that throw happens
-// during module evaluation and takes the entire public site down with a blank
-// #root. Never let a missing admin credential break the public pages: fall back
-// to an inert client that mirrors the parts of the auth API we actually call and
-// simply reports "signed out".
+// Env values typed into a hosting dashboard routinely pick up wrapping quotes,
+// stray whitespace, or — when a multi-line block is pasted into a single value
+// field — a whole second variable glued onto the end. Chromium's URL parser
+// silently percent-encodes that junk into the hostname, so a broken value looks
+// fine on Android/desktop Chrome while WebKit (every browser on iOS, plus
+// desktop Safari) rejects it, `createClient` throws during module evaluation,
+// React never mounts, and the entire public site is a blank #root on iPhones.
+// Keep only the first whitespace-delimited token and re-validate it here so all
+// engines agree on the result.
+function normalizeUrl(raw) {
+  if (typeof raw !== "string") return null;
+  const token = raw.trim().replace(/^["']|["']$/g, "").split(/\s+/)[0];
+  if (!token) return null;
+  try {
+    const url = new URL(token);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+    return url.origin;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeKey(raw) {
+  if (typeof raw !== "string") return null;
+  // A JWT never contains whitespace, so trimming is always safe.
+  const token = raw.trim().replace(/^["']|["']$/g, "").split(/\s+/)[0];
+  return token || null;
+}
+
+const supabaseUrl = normalizeUrl(import.meta.env.VITE_SUPABASE_URL);
+const supabaseAnonKey = normalizeKey(import.meta.env.VITE_SUPABASE_ANON_KEY);
+
+// An inert client mirroring the parts of the auth API we actually call. It
+// reports "signed out" for everything, so the admin pages degrade to a clear
+// error instead of crashing and the public pages are untouched.
 function createStubClient() {
   return {
     auth: {
@@ -34,17 +59,36 @@ function createStubClient() {
   };
 }
 
-if (!supabaseConfigured) {
-  console.warn(
-    "⚠️ VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are not set — admin login is disabled."
-  );
+function createSafeClient() {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn(
+      "⚠️ VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are missing or malformed — admin login is disabled."
+    );
+    return { client: createStubClient(), ok: false };
+  }
+
+  // Belt and braces: never let anything createClient() throws escape this
+  // module and blank the site.
+  try {
+    return {
+      client: createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+        },
+      }),
+      ok: true,
+    };
+  } catch (err) {
+    console.error(
+      "⚠️ Supabase client could not be created — admin login is disabled.",
+      err
+    );
+    return { client: createStubClient(), ok: false };
+  }
 }
 
-export const supabase = supabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-      },
-    })
-  : createStubClient();
+const { client, ok } = createSafeClient();
+
+export const supabaseConfigured = ok;
+export const supabase = client;

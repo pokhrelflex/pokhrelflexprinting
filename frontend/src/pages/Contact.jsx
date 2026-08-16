@@ -73,7 +73,10 @@ export default function Contact() {
           <div className="grid items-start gap-10 lg:gap-16 lg:grid-cols-2">
 
             {/* Left — Headline + Contact Details */}
-            <div>
+            {/* min-w-0: grid items default to min-width:auto, so the form card's
+                intrinsic input width (size=20) would push the track past the
+                viewport and scroll the whole page sideways on small phones. */}
+            <div className="min-w-0">
               <h1 className="premium-font-galdgderbold text-3xl sm:text-4xl md:text-5xl text-[#003A4D] leading-tight">
                 We are ready to help you print your vision
               </h1>
@@ -121,7 +124,7 @@ export default function Contact() {
             </div>
 
             {/* Right — Contact Form */}
-            <div className="bg-[#003A4D]/5 backdrop-blur-sm p-6 sm:p-8 md:p-10">
+            <div className="min-w-0 bg-[#003A4D]/5 backdrop-blur-sm p-6 sm:p-8 md:p-10">
               <h2 className="premium-font-galdgdersemi text-xl sm:text-2xl text-[#003A4D]">Get a Quote</h2>
               <p className="mt-2 text-sm text-[#1A1A1A]/50">
                 Tell us what you need printed and we'll get back to you within 24 hours.
